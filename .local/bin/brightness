@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# 1) `${n}` output the `n` th argument provided to the bash script.
+	# Trivia: When n = 0, it shows the script name run.
+# 2) `$@` outputs the list of arguments provided separated by space.
+# 3) `$#` outptus the total number of command line arguments passed to the bash script.
+
+current_brightness=$(cat /sys/class/backlight/intel_backlight/brightness)
+max_brightness=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+min_brightness=1
+
+# To get result in float using awk
+# brightness_percentage=$(awk "BEGIN { print 100 * $current_brightness / $max_brightness }")
+brightness_percentage=$(expr 100 \* $current_brightness / $max_brightness)
+
+if [ $# -eq 0 ]
+then
+	# echo brightness		= $brightness_percentage %
+  echo 󰃟 $brightness_percentage%
+elif [ $# -eq 1 ]
+then
+	min_brightness=$((1 * 25))
+	echo Brightness level set to
+	if [ $1 -le $max_brightness ] && [ $1 -ge $min_brightness ]
+	then
+		echo $1 | sudo tee /sys/class/backlight/intel_backlight/brightness
+	elif [ $1 -lt $min_brightness ]
+	then
+		echo $min_brightness | sudo tee /sys/class/backlight/intel_backlight/brightness
+    echo min_brightness	= $min_brightness
+    echo max_brightness	= $max_brightness
+	else [ $1 -gt $max_brightness ]
+		echo $max_brightness | sudo tee /sys/class/backlight/intel_backlight/brightness
+    echo min_brightness	= $min_brightness
+    echo max_brightness	= $max_brightness
+	fi
+fi

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+capacity=$(cat /sys/class/power_supply/BAT1/capacity)
+state=$(cat /sys/class/power_supply/BAT1/status)
+
+# echo "Battery: $capacity% $state"
+charge=""
+if [[ $state == "Charging" ]]; then
+  charge="󱐋"
+fi
+
+if [[ $capacity -gt 80 && $capacity -le 100 ]]; then
+  echo "󰂁 $capacity%$charge"
+elif [[ $capacity -gt 60 && $capacity -le 80 ]]; then
+  echo "󰁿 $capacity%$charge"
+elif [[ $capacity -gt 40 && $capacity -le 60 ]]; then
+  echo "󰁽 $capacity%$charge"
+elif [[ $capacity -gt 20 && $capacity -le 40 ]]; then
+  echo "󰁻 $capacity%$charge"
+else
+  echo "󰂃 $capacity%$charge"
+fi
