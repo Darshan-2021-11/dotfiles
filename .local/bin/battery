@@ -5,7 +5,7 @@ state=$(cat /sys/class/power_supply/BAT1/status)
 
 # echo "Battery: $capacity% $state"
 charge=""
-if [[ $state == "Charging" ]]; then
+if [[ $state == "Charging" || $state == "Full" ]]; then
   charge="󱐋"
 fi
 
