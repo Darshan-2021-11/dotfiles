@@ -1,24 +1,57 @@
 #!/bin/sh
 
+target_sink=0 min_volume=0 max_volume=200
+
+set_volume() {
+  # Since these values can change, made then global
+	# local min_volume=0 max_volume=200
+	if [ $volume -lt $min_volume ]
+	then
+    volume=$min_volume
+		echo Minimum volume is $min_volume
+	elif [ $volume -gt $max_volume ]
+  then
+    volume=$max_volume
+		echo Maximum volume is $max_volume
+	fi
+		# pamixer --allow-boost --set-volume $volume
+    volume="$volume%"
+    pactl set-sink-volume $target_sink $volume
+		echo Volume is set to $volume
+}
+
 if [ $# -eq 0 ]
 then
 	# echo Volume: $(pamixer --get-volume-human)
-	echo 󰕾 $(pamixer --get-volume-human)
+	# echo 󰕾 $(pamixer --get-volume-human)
+  if [ $(pactl list sinks | grep -A 10 "Sink #$target_sink" | grep -c "Mute: no") -eq 1 ]; then
+    echo 󰕾 $(pactl list sinks | grep -A 10 "Sink #$target_sink" | grep "Volume:" | head -n 1 | awk '{print $5}')
+  else
+    echo 󰝟
+  fi
 elif [ $# -eq 1 ]
 then
-	min_volume=0
-	max_volume=200
-	if [ $1 -le $max_volume ] && [ $1 -ge $min_volume ]
-	then
-		pamixer --allow-boost --set-volume $1
-	elif [ $1 -lt $min_volume ]
-	then
-		pamixer --set-volume $min_volume
-		echo Minimum volume is $min_volume
-		echo Volume is set to $min_volume
-	else [ $1 -gt $max_volume ]
-		pamixer --allow-boost --set-volume $1
-		echo Maximum volume is $max_volume
-		echo Volume is set to $max_volume
-	fi
+  volume=$1
+  set_volume
+elif [[ $# -eq 2 ]]; then
+  # volume=$(pamixer --get-volume)
+	volume=$(pactl list sinks | grep -A 10 "Sink #$target_sink" | grep "Volume:" | head -n 1 | awk '{print $5}' | tr -d '%')
+	case "$1" in
+		"i")
+			volume=$(($volume + $2))
+				;;
+		"d")
+			volume=$(($volume - $2))
+				;;
+		*)
+				# Handle cases where $1 is neither "i" nor "d"
+				echo "Invalid input: $1"
+				echo "'i' for incrementing current volume"
+				echo "'d' for decrementing current volume"
+				exit 1
+				;;
+	esac
+  set_volume
+else
+  echo "Invalid number of arguments."
 fi

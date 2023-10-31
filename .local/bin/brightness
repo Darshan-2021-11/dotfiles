@@ -1,37 +1,61 @@
 #!/bin/sh
 
 # 1) `${n}` output the `n` th argument provided to the bash script.
-	# Trivia: When n = 0, it shows the script name run.
+#	 Trivia: When n = 0, it shows the script name run.
 # 2) `$@` outputs the list of arguments provided separated by space.
 # 3) `$#` outptus the total number of command line arguments passed to the bash script.
 
 current_brightness=$(cat /sys/class/backlight/intel_backlight/brightness)
 max_brightness=$(cat /sys/class/backlight/intel_backlight/max_brightness)
-min_brightness=1
 
-# To get result in float using awk
-# brightness_percentage=$(awk "BEGIN { print 100 * $current_brightness / $max_brightness }")
-brightness_percentage=$(expr 100 \* $current_brightness / $max_brightness)
+brightness_percentage=$((100 * $current_brightness / $max_brightness))
+
+set_brightness_percentage() {
+  # Never have to change the value
+  # adding 1 as actual brightness value clipped off while calculating brightness percentage value
+  local min_brightness_percentage=$((2 + 1)) max_brightness_percentage=100
+  brightness_percentage=$(($brightness_percentage + 1))
+  echo $brightness_percentage
+	if [ $brightness_percentage -lt $min_brightness_percentage ]; then
+		brightness_percentage=$min_brightness_percentage
+		echo "minimum: $min_brightness_percentage"
+	elif [ $brightness_percentage -gt $max_brightness_percentage ]; then
+		brightness_percentage=$max_brightness_percentage
+		echo "maximum: $max_brightness_percentage"
+	fi
+
+	echo "Brightness level set to"
+  echo $((brightness_percentage * max_brightness / 100)) | sudo tee /sys/class/backlight/intel_backlight/brightness
+}
 
 if [ $# -eq 0 ]
 then
-	# echo brightness		= $brightness_percentage %
-  echo 󰃟 $brightness_percentage%
+# echo brightness:$brightness_percentage%
+	echo 󰃟 $brightness_percentage%
+
+# manual setting of brightness from now on
 elif [ $# -eq 1 ]
 then
-	min_brightness=$((1 * 25))
-	echo Brightness level set to
-	if [ $1 -le $max_brightness ] && [ $1 -ge $min_brightness ]
-	then
-		echo $1 | sudo tee /sys/class/backlight/intel_backlight/brightness
-	elif [ $1 -lt $min_brightness ]
-	then
-		echo $min_brightness | sudo tee /sys/class/backlight/intel_backlight/brightness
-    echo min_brightness	= $min_brightness
-    echo max_brightness	= $max_brightness
-	else [ $1 -gt $max_brightness ]
-		echo $max_brightness | sudo tee /sys/class/backlight/intel_backlight/brightness
-    echo min_brightness	= $min_brightness
-    echo max_brightness	= $max_brightness
-	fi
+	brightness_percentage=$1
+	set_brightness_percentage
+elif [ $# -eq 2 ]
+then
+	case "$1" in
+		"i")
+			brightness_percentage=$(($brightness_percentage + $2))
+				;;
+		"d")
+			brightness_percentage=$(($brightness_percentage - $2))
+				;;
+		*)
+				# Handle cases where $1 is neither "i" nor "d"
+				echo "Invalid input: $1"
+				echo "'i' for incrementing current brightness"
+				echo "'d' for decrementing current brightness"
+				exit 1
+				;;
+	esac
+	set_brightness_percentage
+else
+  echo "Invalid number of arguments."
 fi
