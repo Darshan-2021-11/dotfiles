@@ -62,10 +62,11 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-// This is my setting for pulseaudio, you can refer the link below
+// This is my setting for `pulseaudio`, you can refer the link below
 // https://www.reddit.com/r/suckless/comments/c64pv8/controlling_audiobacklight_through_keys_in_dwm/es69te5/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 // for more info about amixer
 static const char *mutecmd[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
+// `volume` & `brightness` executables are my shell commands, found in dotfiles repo
 static const char *volupcmd[] = { "volume", "i", "2", NULL };
 static const char *voldowncmd[] = { "volume", "d", "2", NULL };
 // Note: For the brightness command to work, you need to add the following to `/etc/sudoers` file
@@ -73,6 +74,9 @@ static const char *voldowncmd[] = { "volume", "d", "2", NULL };
 // where username should be your username where you are setting dwm up, and you have the path to brightness present in `~/.local/bin/` in my dotfiles
 static const char *brupcmd[] = { "sudo", "brightness", "i", "2", NULL };
 static const char *brdowncmd[] = { "sudo", "brightness", "d", "2", NULL };
+// add the path to the screenshot folder in the 2nd argument for screenshots using `scrot` program
+static const char *prtscfullcmd[] = { "scrot", "-q", "100", NULL };
+static const char *prtscselectcmd[] = { "scrot", "-q", "100", "-s", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -108,12 +112,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_q,       quit,          {0} },
   { 0,            XF86XK_AudioMute,           spawn,         {.v = mutecmd } },
   { 0,            XF86XK_AudioLowerVolume,    spawn,         {.v = voldowncmd } },
   { 0,            XF86XK_AudioRaiseVolume,    spawn,         {.v = volupcmd } },
   { 0,            XF86XK_MonBrightnessUp,     spawn,         {.v = brupcmd} },
   { 0,            XF86XK_MonBrightnessDown,   spawn,         {.v = brdowncmd} },
+  { MODKEY,                     XK_Print,     spawn,         {.v = prtscfullcmd} },
+  { MODKEY|ShiftMask,           XK_Print,     spawn,         {.v = prtscselectcmd} },
 };
 /* button definitions */ /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
