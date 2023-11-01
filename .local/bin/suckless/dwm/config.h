@@ -79,6 +79,7 @@ static const char *prtscfullcmd[] = { "scrot", "-q", "100", NULL };
 static const char *prtscselectcmd[] = { "scrot", "-q", "100", "-s", NULL };
 
 static const Key keys[] = {
+  // default key bindings
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
@@ -113,11 +114,15 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,       quit,          {0} },
+  // custom key bindings
+
+  // media keys bindings
   { 0,            XF86XK_AudioMute,           spawn,         {.v = mutecmd } },
   { 0,            XF86XK_AudioLowerVolume,    spawn,         {.v = voldowncmd } },
   { 0,            XF86XK_AudioRaiseVolume,    spawn,         {.v = volupcmd } },
   { 0,            XF86XK_MonBrightnessUp,     spawn,         {.v = brupcmd} },
   { 0,            XF86XK_MonBrightnessDown,   spawn,         {.v = brdowncmd} },
+  // screenshot bindings
   { MODKEY,                     XK_Print,     spawn,         {.v = prtscfullcmd} },
   { MODKEY|ShiftMask,           XK_Print,     spawn,         {.v = prtscselectcmd} },
 };
