@@ -18,18 +18,15 @@ g.netrw_browse_split = 3
 g.netrw_keepdir = 1
 -- preview is vertical
 g.netrw_preview = 1
+
 -- open netrw with startup of nvim or a new tab
---vim.cmd([[
---	autocmd VimEnter,TabNewEntered * leftabove 30vs | Ex | wincmd l
---]])
-vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, {
-	pattern = { "*", },
-	callback = function()
-		vim.cmd[[
-		leftabove 30vs | Ex | wincmd l
-		]]
-	end
-})
+--[[
+	This global variable `netrw_open`, defines whether netrw should be open or not,
+	autocmd checks if it is true, then netrw is opened in new tab, else not.
+
+	Variable is defined in `keymaps.lua` file
+--]]
+netrw_open = true
 
 -- setting color
 o.termguicolors = true
@@ -73,10 +70,13 @@ o.textwidth = 78
 -- setting colorscheme before defining status bar and colorcolumn
 --vim.cmd[[ colorscheme slate ]]
 
--- highlight column and setting its color(helpful for text wrapping)
--- makes redrawing slower
---o.colorcolumn:append({ "79", })
---vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
+--[[ highlight column and setting its color(helpful for text wrapping)
+makes redrawing slower
+
+o.colorcolumn:append({ "79", })
+vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
+
+--]]
 
 -- use special symbols for whitespaces
 o.list = true

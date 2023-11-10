@@ -8,7 +8,6 @@ k("n", "<C-u>", "<C-u>z.")
 -- Tab bindings
 k("n", "<leader>to", ":tabnew ", { noremap = true, desc = "Create a new tab" })
 k("n", "<leader>tt", ":tab ", { noremap = true, desc = "Create a new tab while executing a shell or vim command" })
-k("n", "<leader>te", ":tab terminal<CR>i", { noremap = true, desc = "Create a new tab opening default terminal in insert mode" })
 k("n", "<leader>tc", ":tabclose<CR>", { noremap = true, desc = "Close the current tab" }) -- this closes the tab but does not close buffers
 
 -- wrote this two custom functions to detect and delete hidden buffers
@@ -29,49 +28,39 @@ local function delete_hidden_buffers()
     vim.api.nvim_buf_delete(buffer, {})
   end
 end
--- Can use a custom function
---k("n", "<leader>tc", function()
---	vim.cmd[[tabclose]]
---	delete_hidden_buffers()
---end, { noremap = true, desc = "Close the current tab" }) -- this closes the tab but does not close buffers
 k("n", "<leader>tc", ":tabclose<CR>", { noremap = true, desc = "Close the current tab" }) -- this closes the tab but does not close buffers
--- But I prefer autocmd
 vim.api.nvim_create_autocmd({ "TabClosed", }, {
 	pattern = { "*", },
 	callback = function()
 		delete_hidden_buffers()
 	end
 })
-k("n", "<leader>tp", ":tabprevious<CR>", { noremap = true, desc = "Move to the previous tab" })	-- can also use `gT`
-k("n", "<leader>tn", ":tabnext<CR>", { noremap = true, desc = "Move to the next tab" })	-- can also use `gt`
+--k("n", "<leader>tp", ":tabprevious<CR>", { noremap = true, desc = "Move to the previous tab" })	-- can also use `gT`
+--k("n", "<leader>tn", ":tabnext<CR>", { noremap = true, desc = "Move to the next tab" })	-- can also use `gt`
 
 -- Easy split generation
 k("n", "<leader>wv", ":vsplit", { noremap = true, desc = "Create a vertical split" })
 k("n", "<leader>ws", ":split", { noremap = true, desc = "Create a horizontal split" })
 
 -- Easy split navigation
-k("n", "<leader>h", "<C-w>h", { noremap = true, desc = "Switch to the left split" })
-k("n", "<leader>l", "<C-w>l", { noremap = true, desc = "Switch to the right split" })
-k("n", "<leader>j", "<C-w>j", { noremap = true, desc = "Switch to the bottom split" })
-k("n", "<leader>k", "<C-w>k", { noremap = true, desc = "Switch to the top split" })
+--k("n", "<leader>h", "<C-w>h", { noremap = true, desc = "Switch to the left split" })
+--k("n", "<leader>l", "<C-w>l", { noremap = true, desc = "Switch to the right split" })
+--k("n", "<leader>j", "<C-w>j", { noremap = true, desc = "Switch to the bottom split" })
+--k("n", "<leader>k", "<C-w>k", { noremap = true, desc = "Switch to the top split" })
 
 -- Adjust split sizes easier
 k("n", "<leader>i", ":vertical resize +3<CR>", { noremap = true, desc = "Increase vertical split size" })
 k("n", "<leader>d", ":vertical resize -3<CR>", { noremap = true, desc = "Decrease vertical split size" })
 
 -- Buffer navigation
-k("n", "<leader>bn", ":bnext<CR>", { noremap = true, desc = "Go to the next buffer" })
-k("n", "<leader>bp", ":bprevious<CR>", { noremap = true, desc = "Go to the previous buffer" })
-k("n", "<leader>bc", ":bd!<CR>", { noremap = true, desc = "Close the current buffer" })
+--k("n", "<leader>bn", ":bnext<CR>", { noremap = true, desc = "Go to the next buffer" })
+--k("n", "<leader>bp", ":bprevious<CR>", { noremap = true, desc = "Go to the previous buffer" })
+--k("n", "<leader>bc", ":bd!<CR>", { noremap = true, desc = "Close the current buffer" })
 
 -- Automatically create if, case, and function templates
 k("n", "<leader>if", "iif [ @ ]; then<CR><CR>else<CR><CR>fi<ESC>/@<CR>", { noremap = true, desc = "Automatically create an if statement" })
 k("n", "<leader>case", "icase \"$@\" in<CR><CR>@)   <CR>;;<CR><CR>esac<ESC>5kI<ESC>/@<CR>", { noremap = true, desc = "Automatically create a case statement" })
 k("n", "<leader>func", "i@() {<CR><CR>}<ESC>2kI<ESC>/@<CR>", { noremap = true, desc = "Automatically create a function" })
-
--- Easy way to get back to normal mode from the home row
---k("i", "kj", "<Esc>", { noremap = true, desc = "Simulate ESC with 'kj'" })
---k("i", "jk", "<Esc>", { noremap = true, desc = "Simulate ESC with 'jk'" })
 
 -- Automatically close brackets, parentheses, and quotes
 k("i", "'", "''<left>", { noremap = true, desc = "Auto-complete single quotes" })
@@ -83,7 +72,35 @@ k("i", "{;", "{};<left><left>", { noremap = true, desc = "Auto-complete curly br
 k("i", "{<CR>", "{<CR>}<ESC>O", { noremap = true, desc = "Auto-complete curly braces and open code scope" })
 
 -- TODO: Plugins keymaps
--- Open netrw in a 18% split in tree view
-k("n", "<leader>e", ":18Lex<CR>", { noremap = true, desc = "Toggle netrw tree view" })
--- Open netrw in all tabs
---k("n", "<leader>e", ":tabdo 20Lex<CR>", { noremap = true, desc = "Toggle netrw tree view" })
+-- Open netrw in a 20% split in tree view
+-- only for one tab
+--k("n", "<leader>e", ":20Lex<CR>", { noremap = true, desc = "Toggle netrw tree view" })
+-- for multiple tabs
+local function toogle_netrw()
+-- toogle netrw
+	netrw_open = not netrw_open
+
+-- open or close netrw in all the tabs
+	local current_tabpage = vim.fn.tabpagenr()
+	vim.cmd [[ tabdo 20Lex | wincmd l ]]
+	vim.cmd(current_tabpage .. "tabnext")
+
+-- to get the directory listing of the current tab, we need to reopen the
+-- netrw in the current tab otherwise the netrw listing will show the folder
+-- of the last tab in the list
+	if netrw_open == true then
+		vim.cmd [[ 20Lex | wincmd l ]]
+		vim.cmd [[ 20Lex | wincmd l ]]
+	end
+end
+vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, {
+	pattern = { "*", },
+	callback = function()
+		if netrw_open == true then
+			vim.cmd[[ 20Lex | wincmd l ]]
+--		vim.cmd[[ leftabove 30vs | Ex | wincmd l ]]
+		end
+	end
+})
+-- Open netrw in all tabs(very annoying without helper function)
+k("n", "<leader>e", function() toogle_netrw() end, { noremap = true, desc = "Toggle netrw tree view" })
