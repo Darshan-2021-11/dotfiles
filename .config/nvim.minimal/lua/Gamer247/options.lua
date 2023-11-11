@@ -1,6 +1,5 @@
 local o = vim.opt
 local g = vim.g
-
 g.mapleader = " "
 
 -- NETRW
@@ -21,10 +20,10 @@ g.netrw_preview = 1
 
 -- open netrw with startup of nvim or a new tab
 --[[
-	This global variable `netrw_open`, defines whether netrw should be open or not,
-	autocmd checks if it is true, then netrw is opened in new tab, else not.
+This global variable `netrw_open`, defines whether netrw should be open or not,
+autocmd checks if it is true, then netrw is opened in new tab, else not.
 
-	Variable is defined in `keymaps.lua` file
+Variable is defined in `keymaps.lua` file
 --]]
 netrw_open = true
 
@@ -41,7 +40,6 @@ o.confirm = true
 
 -- change directory to current file
 o.autochdir = true
-
 -- show line numbers
 o.number = true
 o.relativenumber = true
@@ -100,7 +98,30 @@ o.showtabline = 2
 -- fast macros
 o.lazyredraw = true
 
+-- setting spellcheck
+o.spell = true
+
+-- autocompletion settings
+o.complete:append({ "kspell" })
 o.completeopt:append({ "noselect", "menuone", })
+o.omnifunc:append("syntaxcomplete#Complete")
+
+-- setting the completion popup to show automatically
+o.shortmess:append("c")
+
+-- auto trigger autocompletion
+local triggers = {"."}
+vim.api.nvim_create_autocmd("InsertCharPre", {
+  buffer = vim.api.nvim_get_current_buf(),
+  callback = function()
+    if vim.fn.pumvisible() == 1 then
+      return
+    end
+
+		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
+		vim.api.nvim_feedkeys(key, "n", true)
+  end
+})
 
 -- custom statusline
 vim.cmd "highlight StatusType guibg=#b16286 guifg=#1d2021"
@@ -111,36 +132,36 @@ vim.cmd "highlight StatusLocation guibg=#458588 guifg=#1d2021"
 vim.cmd "highlight StatusPercent guibg=#1d2021 guifg=#ebdbb2"
 vim.cmd "highlight StatusNorm guibg=none guifg=white"
 vim.o.statusline = " "
-				.. ""
-				.. " "
-				.. "%l"
-				.. " "
-				.. " %#StatusType#"
-				.. "<< "
-				.. "%Y" 
-				.. "  "
-				.. " >>"
-				.. "%#StatusFile#"
-				.. "<< "
-				.. "%F"
-				.. " >>"
-				.. "%#StatusModified#"
-				.. " "
-				.. "%m"
-				.. " "
-				.. "%#StatusNorm#"
-				.. "%="
-				.. "%#StatusBuffer#"
-				.. "<< "
-				.. "﬘ "
-				.. "%n"
-				.. " >>"
-				.. "%#StatusLocation#"
-				.. "<< "
-				.. "燐 "
-				.. "%l,%c"
-				.. " >>"
-				.. "%#StatusPercent#"
-				.. "<< "
-				.. "%p%%  "
-				.. " >> "
+.. ""
+.. " "
+.. "%l"
+.. " "
+.. " %#StatusType#"
+.. "<< "
+.. "%Y" 
+.. "  "
+.. " >>"
+.. "%#StatusFile#"
+.. "<< "
+.. "%F"
+.. " >>"
+.. "%#StatusModified#"
+.. " "
+.. "%m"
+.. " "
+.. "%#StatusNorm#"
+.. "%="
+.. "%#StatusBuffer#"
+.. "<< "
+.. "﬘ "
+.. "%n"
+.. " >>"
+.. "%#StatusLocation#"
+.. "<< "
+.. "燐 "
+.. "%l,%c"
+.. " >>"
+.. "%#StatusPercent#"
+.. "<< "
+.. "%p%%  "
+.. " >> "
