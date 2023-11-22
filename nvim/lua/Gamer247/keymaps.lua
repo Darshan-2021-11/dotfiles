@@ -98,3 +98,8 @@ vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, {
 })
 -- Open netrw in all tabs(very annoying without helper function)
 k("n", "<leader>e", function() toogle_netrw() end, { noremap = true, desc = "Toggle netrw tree view" })
+
+
+
+-- SNIPPETS
+vim.api.nvim_set_keymap("n", "<leader>cpp", ":-1read $HOME/.config/nvim/snippets/cpp<CR>16ji<Tab>", { noremap = true, silent = true })

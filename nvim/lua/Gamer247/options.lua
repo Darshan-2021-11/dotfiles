@@ -40,7 +40,7 @@ o.cursorlineopt = { "both" }
 o.confirm = true
 
 -- change directory to current file
-o.autochdir = true
+--o.autochdir = true
 -- show line numbers
 o.number = true
 o.relativenumber = true
@@ -121,7 +121,7 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 --	<C-o> for native code completion
 --	<C-n>, <C-p> for auto completion from current file
 --	<C-k> for spelling, set for current language used by `set spell`
-		local key = vim.api.nvim_replace_termcodes("<C-x><C-k>", true, true, true)
+		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
 		vim.api.nvim_feedkeys(key, "n", true)
   end
 })

@@ -13,16 +13,33 @@ date_format() {
 	echo -e "$dateFormat"
 }
 
+network_format() {
+	echo $network_info
+}
+
 while :; do
-	xsetroot -name " $(network) | $(volume) | $(brightness) | $(battery) | $(date_format)"
+	# internet_speed
+	rx1=$(cat /sys/class/net/wlp9s0/statistics/rx_bytes)
+	tx1=$(cat /sys/class/net/wlp9s0/statistics/tx_bytes)
+	sleep 1s
+	rx2=$(cat /sys/class/net/wlp9s0/statistics/rx_bytes)
+	tx2=$(cat /sys/class/net/wlp9s0/statistics/tx_bytes)
+
+	network_info="󰁅 $((rx2-rx1)) B/s, 󰁝 $((tx2-tx1)) B/s"
+
+	rx1=$rx2
+	tx1=$tx2
+
+	# dwm status bar
+	xprop -root -set WM_NAME " $(network_format) | $(volume) | $(brightness) | $(battery) | $(date_format)"
 done &
 
 # Setting wallpaper
-#while feh --bg-fill ~/downloads/wallpapers/$(ls ~/downloads/wallpapers/ | shuf -n 1); do sleep 5m; done &
+#while feh --bg-fill ~/downloads/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1); do sleep 5m; done &
 feh --bg-fill ~/.local/share/wallpapers/wallhaven-8oy372.jpg &
 
-st &
-brave &
+st -e tmux &
+firefox &
 
 # Start dwm
 exec dwm
