@@ -97,7 +97,7 @@ vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, {
 	end
 })
 -- Open netrw in all tabs(very annoying without helper function)
-k("n", "<leader>e", function() toogle_netrw() end, { noremap = true, desc = "Toggle netrw tree view" })
+k("n", "<leader>n", function() toogle_netrw() end, { noremap = true, desc = "Toggle netrw tree view" })
 
 
 
