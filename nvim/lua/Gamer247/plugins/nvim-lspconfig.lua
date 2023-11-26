@@ -20,8 +20,10 @@ local lspconfig = require('lspconfig')
 -- Setup language servers.
 
 -- clangd for cpp
--- ensure that your system has clangd installed
+-- ensure that your system has clangd installed via aur package
 lspconfig.clangd.setup {}
+-- ensure that your system has tsserver installed via aur package
+lspconfig.tsserver.setup {}
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
