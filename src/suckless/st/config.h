@@ -5,8 +5,9 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-// static char *font = "SauceCodePro Nerd Font Mono:pixelsize=14:antialias=true:autohint=true";
-static char *font = "SauceCodePro Nerd Font Mono:pixelsize=14:antialias=true:autohint=true";
+// static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+// static char *font = "SauceCodePro Nerd Font:style=Semibold:pixelsize=12:antialias=true:autohint=true";
+static char *font = "SauceCodePro Nerd Font:style=Regular:pixelsize=12:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -121,8 +122,8 @@ static const char *colorname[] = {
 	/* more colors can be added after 255 to use with DefaultXX */
 	"#cccccc",
 	"#555555",
-	"#CBE0F0", /* default foreground colour */
-	"#011628", /* default background colour */
+	"gray90", /* default foreground colour */
+	"black", /* default background colour */
 };
 
 

@@ -4,29 +4,19 @@ g.mapleader = " "
 
 -- NETRW
 -- remove annoying banner
-g.netrw_banner = 0
+--g.netrw_banner = 0
 -- list as tree
 g.netrw_liststyle = 3
 -- reuse a opened window to open file
---g.netrw_browse_split = 4
+g.netrw_browse_split = 4
 -- open new window in vertical split
 --g.netrw_altv = 1
 -- instead use a tab to open file
-g.netrw_browse_split = 3
+--g.netrw_browse_split = 3
 -- use same instance of netrw in all tabs
 g.netrw_keepdir = 1
 -- preview is vertical
 g.netrw_preview = 1
-
--- open netrw with startup of nvim or a new tab
---[[
-This global variable `netrw_open`, defines whether netrw should be open or not,
-autocmd checks if it is true, then netrw is opened in new tab, else not.
-
-Variable is defined in `keymaps.lua` file
---]]
-netrw_open = false
--- netrw_open = true
 
 -- setting color
 o.termguicolors = true
@@ -68,10 +58,10 @@ o.textwidth = 79
 
 --[[ highlight column and setting its color(helpful for text wrapping)
 makes redrawing slower
+--]]
 
 o.colorcolumn:append({ "80", })
 vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
---]]
 
 -- use special symbols for whitespaces
 o.list = true
@@ -125,6 +115,15 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 		vim.api.nvim_feedkeys(key, "n", true)
   end
 })
+-- remove the preview buffer after getting out of autocomplete
+vim.api.nvim_create_autocmd("CompleteDone", {
+  callback = function()
+    if vim.fn.pumvisible() == 1 then
+    	vim.fn.pclose()
+    end
+  end
+})
+
 
 -- custom statusline
 --[[

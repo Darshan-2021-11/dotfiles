@@ -9,7 +9,7 @@ local ensure_nvim_lspconfig = function()
 		--vim.cmd [[packadd nvim-lspconfig.nvim]]
 		return true
 	end
-	vim.print("nvim-lspconfig already installed. Loading it...")
+--vim.print("nvim-lspconfig already installed. Loading it...")
 	return false
 end
 

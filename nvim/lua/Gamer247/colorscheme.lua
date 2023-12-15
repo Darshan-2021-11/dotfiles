@@ -9,7 +9,7 @@ local ensure_tokyonight = function()
 		--vim.cmd [[packadd tokyonight.nvim]]
 		return true
 	end
-	vim.print("Tokyonight theme already installed. Loading it...")
+--vim.print("Tokyonight theme already installed. Loading it...")
 	return false
 end
 
