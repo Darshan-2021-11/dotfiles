@@ -58,7 +58,7 @@ o.textwidth = 79
 
 --[[ highlight column and setting its color(helpful for text wrapping)
 makes redrawing slower
---]]
+]]
 
 o.colorcolumn:append({ "80", })
 vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
@@ -107,10 +107,12 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
       return
     end
 
--- use <C-x>
---	<C-o> for native code completion
---	<C-n>, <C-p> for auto completion from current file
---	<C-k> for spelling, set for current language used by `set spell`
+--[[
+ use <C-x>
+	<C-o> for native code completion
+	<C-n>, <C-p> for auto completion from current file
+	<C-k> for spelling, set for current language used by `set spell`
+]]
 		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
 		vim.api.nvim_feedkeys(key, "n", true)
   end
@@ -168,4 +170,4 @@ vim.o.statusline = " "
 .. "<< "
 .. "%p%%  "
 .. " >> "
---]]
+]]

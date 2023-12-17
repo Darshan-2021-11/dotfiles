@@ -36,9 +36,9 @@ vim.api.nvim_create_autocmd({ "TabClosed", }, {
 		delete_hidden_buffers()
 	end
 })
---]]
---k("n", "<leader>tp", ":tabprevious<CR>", { noremap = true, desc = "Move to the previous tab" })	-- can also use `gT`
---k("n", "<leader>tn", ":tabnext<CR>", { noremap = true, desc = "Move to the next tab" })	-- can also use `gt`
+
+k("n", "<leader>tp", ":tabprevious<CR>", { noremap = true, desc = "Move to the previous tab" })	-- can also use `gT`
+k("n", "<leader>tn", ":tabnext<CR>", { noremap = true, desc = "Move to the next tab" })	-- can also use `gt`
 
 -- Easy split generation
 --k("n", "<leader>wv", ":vsplit", { noremap = true, desc = "Create a vertical split" })
@@ -50,14 +50,15 @@ vim.api.nvim_create_autocmd({ "TabClosed", }, {
 --k("n", "<leader>j", "<C-w>j", { noremap = true, desc = "Switch to the bottom split" })
 --k("n", "<leader>k", "<C-w>k", { noremap = true, desc = "Switch to the top split" })
 
--- Adjust split sizes easier
-k("n", "<leader>i", ":vertical resize +3<CR>", { noremap = true, desc = "Increase vertical split size" })
-k("n", "<leader>d", ":vertical resize -3<CR>", { noremap = true, desc = "Decrease vertical split size" })
-
 -- Buffer navigation
 --k("n", "<leader>bn", ":bnext<CR>", { noremap = true, desc = "Go to the next buffer" })
 --k("n", "<leader>bp", ":bprevious<CR>", { noremap = true, desc = "Go to the previous buffer" })
 --k("n", "<leader>bc", ":bd!<CR>", { noremap = true, desc = "Close the current buffer" })
+]]
+
+-- Adjust split sizes easier
+k("n", "<leader>i", ":vertical resize +3<CR>", { noremap = true, desc = "Increase vertical split size" })
+k("n", "<leader>d", ":vertical resize -3<CR>", { noremap = true, desc = "Decrease vertical split size" })
 
 -- Automatically close brackets, parentheses, and quotes
 k("i", "'", "''<left>", { noremap = true, desc = "Auto-complete single quotes" })
@@ -81,7 +82,7 @@ This global variable `netrw_open`, defines whether netrw should be open or not,
 autocmd checks if it is true, then netrw is opened in new tab, else not.
 
 Variable is defined in `keymaps.lua` file
---]]
+]]
 --[[
 netrw_open = false
 -- netrw_open = true
@@ -114,7 +115,7 @@ vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, {
 
 -- Open netrw in all tabs(very annoying without helper function)
 k("n", "<leader>n", function() toogle_netrw() end, { noremap = true, desc = "Toggle netrw tree view" })
---]]
+]]
 
 -- SNIPPETS
 vim.api.nvim_set_keymap("n", "<leader>cpp", ":-1read $HOME/.config/nvim/snippets/cpp<CR>16ji<Tab>", { noremap = true, silent = true, })
