@@ -31,6 +31,7 @@ local function delete_hidden_buffers()
 end
 -- close hidden buffers on tab close
 vim.api.nvim_create_autocmd({ "TabClosed", }, {
+	group = vim.api.nvim_create_augroup('UserCloseHiddenBuffersOnTabExit', {}),
 	pattern = { "*", },
 	callback = function()
 		delete_hidden_buffers()
@@ -105,6 +106,7 @@ local function toogle_netrw()
 	end
 end
 vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, {
+	group = vim.api.nvim_create_augroup('UserOpenNetrwIfnetrw_open', {}),
 	pattern = { "*", },
 	callback = function()
 		if netrw_open == true then
@@ -118,4 +120,4 @@ k("n", "<leader>n", function() toogle_netrw() end, { noremap = true, desc = "Tog
 ]]
 
 -- SNIPPETS
-vim.api.nvim_set_keymap("n", "<leader>cpp", ":-1read $HOME/.config/nvim/snippets/cpp<CR>16ji<Tab>", { noremap = true, silent = true, })
+vim.api.nvim_set_keymap("n", "<leader>cpp", ":-1read $HOME/.config/nvim/snippets/cpp<CR>15ja<Tab>", { noremap = true, silent = true, })

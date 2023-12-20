@@ -46,8 +46,8 @@ o.copyindent = true
 -- use system clipboard as default register
 o.clipboard:append("unnamedplus")
 
--- no swapfile
-o.swapfile = false
+-- no swapfile for confidential files
+--o.swapfile = false
 
 -- undo file even after exit
 o.undofile = true
@@ -102,10 +102,11 @@ o.shortmess:append("c")
 -- auto trigger autocompletion
 local triggers = { "." }
 vim.api.nvim_create_autocmd("InsertCharPre", {
-  callback = function()
-    if vim.fn.pumvisible() == 1 then
-      return
-    end
+	group = vim.api.nvim_create_augroup('UserComplete', {}),
+	callback = function()
+		if vim.fn.pumvisible() == 1 then
+			return
+		end
 
 --[[
  use <C-x>
@@ -115,15 +116,14 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 ]]
 		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
 		vim.api.nvim_feedkeys(key, "n", true)
-  end
+	end
 })
 -- remove the preview buffer after getting out of autocomplete
 vim.api.nvim_create_autocmd("CompleteDone", {
-  callback = function()
-    if vim.fn.pumvisible() == 1 then
-    	vim.fn.pclose()
-    end
-  end
+	group = vim.api.nvim_create_augroup('UserCompleteDone', {}),
+	callback = function()
+		vim.cmd('pclose')
+	end
 })
 
 
