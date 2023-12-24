@@ -1,17 +1,47 @@
 local k = vim.keymap.set
 
--- Cursor centred while scrolling
--- not used `zz` because if caps lock is on, it will save and quit
+--[[ Cursor centred while scrolling
+not used `zz` because if caps lock is on, it will save and quit
+]]
 k("n", "<C-d>", "<C-d>z.")
 k("n", "<C-u>", "<C-u>z.")
 
 -- Tab bindings
-k("n", "<leader>to", ":tabnew ", { noremap = true, desc = "Create a new tab" })
-k("n", "<leader>tt", ":tab ", { noremap = true, desc = "Create a new tab while executing a shell or vim command" })
-k("n", "<leader>tc", ":tabclose<CR>", { noremap = true, desc = "Close the current tab" }) -- this closes the tab but does not close buffers
+k("n", "<leader>toa", ":tabnew ", { noremap = true, }) -- opens a file relative to current path(path where neovim was opened) or absolute path
+k("n", "<leader>tor", ":tabnew %:p:h/", { noremap = true, }) -- opens a file relative to current file
+--k("n", "<leader>tt", ":tab ", { noremap = true, }) -- opens a new tab for a comand specified here
+k("n", "<leader>tc", ":tabclose<CR>", { noremap = true, }) -- , this closes the tab but does not close buffers when used without close hidden buffer autocmd commented
 
--- wrote this two custom functions to detect and delete hidden buffers
--- took so much time to figure it out from the docs ngl
+-- Automatically close brackets, parentheses, and quotes
+k("i", "'", "''<left>", { noremap = true, })
+k("i", "\"", "\"\"<left>", { noremap = true, })
+k("i", "(", "()<left>", { noremap = true, })
+k("i", "[", "[]<left>", { noremap = true, })
+k("i", "{", "{}<left>", { noremap = true, })
+k("i", "{<CR>", "{<CR>}<ESC>O", { noremap = true, })
+
+-- SNIPPETS
+vim.api.nvim_create_autocmd({ "BufEnter", }, {
+	group = vim.api.nvim_create_augroup('UserSnippets', {}),
+	pattern = { "*.cpp", },
+	callback = function()
+		local config_path = vim.fn.stdpath('config')
+		local path = vim.fn.expand('%:p:h')
+		local executable = vim.fn.expand('%:p:r')
+		local file = vim.fn.expand('%:p')
+
+		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>15ja<Tab>', config_path), { noremap = true, silent = true, })
+		-- compile and run
+		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 %s -o %s && %s < %s/inp<CR>', file, executable, executable, path), { noremap = true, silent = true, })
+		-- run compiled
+		k("n", "<leader>rc", string.format('<ESC>:!%s < %s/inp<CR>', executable, path), { noremap = true, silent = true, })
+	end
+})
+
+--[[ OTHER FUNCIONALITIES
+wrote this two custom functions to detect and delete hidden buffers
+took so much time to figure it out from the docs ngl
+]]
 --[[
 local function detect_hidden_buffers()
   local buffers = vim.api.nvim_list_bufs()
@@ -38,45 +68,36 @@ vim.api.nvim_create_autocmd({ "TabClosed", }, {
 	end
 })
 
-k("n", "<leader>tp", ":tabprevious<CR>", { noremap = true, desc = "Move to the previous tab" })	-- can also use `gT`
-k("n", "<leader>tn", ":tabnext<CR>", { noremap = true, desc = "Move to the next tab" })	-- can also use `gt`
-
--- Easy split generation
---k("n", "<leader>wv", ":vsplit", { noremap = true, desc = "Create a vertical split" })
---k("n", "<leader>ws", ":split", { noremap = true, desc = "Create a horizontal split" })
-
--- Easy split navigation
---k("n", "<leader>h", "<C-w>h", { noremap = true, desc = "Switch to the left split" })
---k("n", "<leader>l", "<C-w>l", { noremap = true, desc = "Switch to the right split" })
---k("n", "<leader>j", "<C-w>j", { noremap = true, desc = "Switch to the bottom split" })
---k("n", "<leader>k", "<C-w>k", { noremap = true, desc = "Switch to the top split" })
-
--- Buffer navigation
---k("n", "<leader>bn", ":bnext<CR>", { noremap = true, desc = "Go to the next buffer" })
---k("n", "<leader>bp", ":bprevious<CR>", { noremap = true, desc = "Go to the previous buffer" })
---k("n", "<leader>bc", ":bd!<CR>", { noremap = true, desc = "Close the current buffer" })
-]]
+k("n", "<leader>tp", ":tabprevious<CR>", { noremap = true, })	-- can also use `gT`
+k("n", "<leader>tn", ":tabnext<CR>", { noremap = true, })	-- can also use `gt`
 
 -- Adjust split sizes easier
-k("n", "<leader>i", ":vertical resize +3<CR>", { noremap = true, desc = "Increase vertical split size" })
-k("n", "<leader>d", ":vertical resize -3<CR>", { noremap = true, desc = "Decrease vertical split size" })
+k("n", "<leader>i", ":vertical resize +3<CR>", { noremap = true, })
+k("n", "<leader>d", ":vertical resize -3<CR>", { noremap = true, })
 
--- Automatically close brackets, parentheses, and quotes
-k("i", "'", "''<left>", { noremap = true, desc = "Auto-complete single quotes" })
-k("i", "\"", "\"\"<left>", { noremap = true, desc = "Auto-complete double quotes" })
-k("i", "(", "()<left>", { noremap = true, desc = "Auto-complete parentheses" })
-k("i", "[", "[]<left>", { noremap = true, desc = "Auto-complete square brackets" })
-k("i", "{", "{}<left>", { noremap = true, desc = "Auto-complete curly braces" })
-k("i", "{;", "{};<left><left>", { noremap = true, desc = "Auto-complete curly braces with a semicolon inside" })
-k("i", "{<CR>", "{<CR>}<ESC>O", { noremap = true, desc = "Auto-complete curly braces and open code scope" })
+-- Easy split generation
+k("n", "<leader>wv", ":vsplit", { noremap = true, })
+k("n", "<leader>ws", ":split", { noremap = true, })
 
--- TODO: Plugins keymaps
--- Open netrw in a 20% split in tree view
--- only for one tab
-k("n", "<leader>n", ":20Lex<CR>", { noremap = true, desc = "Toggle netrw tree view" })
+-- Easy split navigation
+k("n", "<leader>h", "<C-w>h", { noremap = true, })
+k("n", "<leader>l", "<C-w>l", { noremap = true, })
+k("n", "<leader>j", "<C-w>j", { noremap = true, })
+k("n", "<leader>k", "<C-w>k", { noremap = true, })
+
+-- Buffer navigation
+k("n", "<leader>bn", ":bnext<CR>", { noremap = true, })
+k("n", "<leader>bp", ":bprevious<CR>", { noremap = true, })
+k("n", "<leader>bc", ":bd!<CR>", { noremap = true, })
+]]
+
+--[[ TODO: Plugins keymaps
+Open netrw in a 20% split in tree view
+only for one tab
+]]
+k("n", "<leader>n", ":20Lex<CR>", { noremap = true, })
 
 -- for multiple tabs
-
 -- open netrw with startup of nvim or a new tab
 --[[
 This global variable `netrw_open`, defines whether netrw should be open or not,
@@ -116,8 +137,5 @@ vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, {
 })
 
 -- Open netrw in all tabs(very annoying without helper function)
-k("n", "<leader>n", function() toogle_netrw() end, { noremap = true, desc = "Toggle netrw tree view" })
+k("n", "<leader>n", function() toogle_netrw() end, { noremap = true, })
 ]]
-
--- SNIPPETS
-vim.api.nvim_set_keymap("n", "<leader>cpp", ":-1read $HOME/.config/nvim/snippets/cpp<CR>15ja<Tab>", { noremap = true, silent = true, })

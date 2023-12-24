@@ -5,18 +5,14 @@ g.mapleader = " "
 -- NETRW
 -- remove annoying banner
 --g.netrw_banner = 0
--- list as tree
+-- liststyle tree
 g.netrw_liststyle = 3
--- reuse a opened window to open file
+-- open file in current window open
 g.netrw_browse_split = 4
--- open new window in vertical split
---g.netrw_altv = 1
--- instead use a tab to open file
+-- open file in a tab
 --g.netrw_browse_split = 3
--- use same instance of netrw in all tabs
+-- use same instance in all tabs
 g.netrw_keepdir = 1
--- preview is vertical
-g.netrw_preview = 1
 
 -- setting color
 o.termguicolors = true
@@ -24,7 +20,6 @@ o.termguicolors = true
 -- show cursor line and column
 o.cursorline = true
 --o.cursorcolumn = true
-o.cursorlineopt = { "both" }
 
 -- ask for confirmation instead of throwing error
 o.confirm = true
@@ -54,13 +49,12 @@ o.undofile = true
 
 -- text wrapping
 o.wrap = false
-o.textwidth = 79
+o.textwidth = 78
 
 --[[ highlight column and setting its color(helpful for text wrapping)
 makes redrawing slower
 ]]
-
-o.colorcolumn:append({ "80", })
+o.colorcolumn:append({ "79", })
 vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
 
 -- use special symbols for whitespaces
@@ -76,11 +70,15 @@ o.smartcase = true
 o.hlsearch = false
 
 -- window spliting
-o.splitbelow = false
+o.splitbelow = true
 o.splitright = true
 
--- tabline
-o.showtabline = 2
+--[[ tabline
+0: never
+1: only if there are at least two tab pages (default)
+2: always
+]]
+--o.showtabline = 2
 
 -- fast macros
 o.lazyredraw = true
@@ -91,18 +89,17 @@ o.spell = true
 -- completion settings
 o.completeopt:append({ "noselect", "menuone", })
 
--- autocompletion settings, for english
--- if you want autocompletion for code, see comments below
-o.omnifunc = "syntaxcomplete#Complete"
+-- autocompletion settings, for English
 o.complete:append({ "k," })
 
--- setting the completion popup to show automatically
+-- setting up omnifunc for language servers
+o.omnifunc = "syntaxcomplete#Complete"
+-- show completion pop up even if only one option present
 o.shortmess:append("c")
 
--- auto trigger autocompletion
-local triggers = { "." }
+-- setting the completion popup to show automatically
 vim.api.nvim_create_autocmd("InsertCharPre", {
-	group = vim.api.nvim_create_augroup('UserComplete', {}),
+	group = vim.api.nvim_create_augroup("UserComplete", {}),
 	callback = function()
 		if vim.fn.pumvisible() == 1 then
 			return
@@ -120,12 +117,11 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 })
 -- remove the preview buffer after getting out of autocomplete
 vim.api.nvim_create_autocmd("CompleteDone", {
-	group = vim.api.nvim_create_augroup('UserCompleteDone', {}),
+	group = vim.api.nvim_create_augroup("UserComplete", {}),
 	callback = function()
-		vim.cmd('pclose')
+		vim.cmd("pclose")
 	end
 })
-
 
 -- custom statusline
 --[[
