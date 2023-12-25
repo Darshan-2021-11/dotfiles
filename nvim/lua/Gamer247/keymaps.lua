@@ -32,9 +32,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", }, {
 
 		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>15ja<Tab>', config_path), { noremap = true, silent = true, })
 		-- compile and run
-		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 %s -o %s && %s < %s/inp<CR>', file, executable, executable, path), { noremap = true, silent = true, })
+		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -fsanitize=address -std=c++20 -Wall -Wextra -Wshadow -DONPC -O2 "%s" -o "%s" && "%s" < "%s/inp"<CR>', file, executable, executable, path), { noremap = true, silent = true, })
 		-- run compiled
-		k("n", "<leader>rc", string.format('<ESC>:!%s < %s/inp<CR>', executable, path), { noremap = true, silent = true, })
+		k("n", "<leader>rc", string.format('<ESC>:!"%s" < "%s/inp"<CR>', executable, path), { noremap = true, silent = true, })
 	end
 })
 
