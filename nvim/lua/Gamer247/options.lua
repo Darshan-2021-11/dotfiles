@@ -69,9 +69,10 @@ o.ignorecase = true
 o.smartcase = true
 o.hlsearch = false
 
--- window spliting
+--[[ window spliting
 o.splitbelow = true
 o.splitright = true
+]]
 
 --[[ tabline
 0: never
@@ -99,7 +100,7 @@ o.shortmess:append("c")
 
 -- setting the completion popup to show automatically
 vim.api.nvim_create_autocmd("InsertCharPre", {
-	group = vim.api.nvim_create_augroup("UserComplete", {}),
+	group = vim.api.nvim_create_augroup("UserComplete", { clear = false }),
 	callback = function()
 		if vim.fn.pumvisible() == 1 then
 			return
@@ -110,14 +111,14 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 	<C-o> for native code completion
 	<C-n>, <C-p> for auto completion from current file
 	<C-k> for spelling, set for current language used by `set spell`
-]]
+--]]
 		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
-		vim.api.nvim_feedkeys(key, "n", true)
+		vim.api.nvim_feedkeys(key, "i", true)
 	end
 })
 -- remove the preview buffer after getting out of autocomplete
 vim.api.nvim_create_autocmd("CompleteDone", {
-	group = vim.api.nvim_create_augroup("UserComplete", {}),
+	group = vim.api.nvim_create_augroup("UserComplete", { clear = false }),
 	callback = function()
 		vim.cmd("pclose")
 	end

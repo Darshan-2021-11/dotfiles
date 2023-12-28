@@ -9,3 +9,6 @@ export PATH=~/.local/src:$PATH
 
 # start xorg server
 startx
+
+# clear screen at the end
+clear && neofetch

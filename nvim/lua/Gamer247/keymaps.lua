@@ -22,7 +22,7 @@ k("i", "{<CR>", "{<CR>}<ESC>O", { noremap = true, })
 
 -- SNIPPETS
 vim.api.nvim_create_autocmd({ "BufEnter", }, {
-	group = vim.api.nvim_create_augroup('UserSnippets', {}),
+	group = vim.api.nvim_create_augroup('UserSnippets', { clear = false }),
 	pattern = { "*.cpp", },
 	callback = function()
 		local config_path = vim.fn.stdpath('config')
@@ -61,7 +61,7 @@ local function delete_hidden_buffers()
 end
 -- close hidden buffers on tab close
 vim.api.nvim_create_autocmd({ "TabClosed", }, {
-	group = vim.api.nvim_create_augroup('UserCloseHiddenBuffersOnTabExit', {}),
+	group = vim.api.nvim_create_augroup('UserCloseHiddenBuffersOnTabExit', { clear = false }),
 	pattern = { "*", },
 	callback = function()
 		delete_hidden_buffers()
@@ -127,7 +127,7 @@ local function toogle_netrw()
 	end
 end
 vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, {
-	group = vim.api.nvim_create_augroup('UserOpenNetrwIfnetrw_open', {}),
+	group = vim.api.nvim_create_augroup('UserOpenNetrwIfnetrw_open', { clear = false }),
 	pattern = { "*", },
 	callback = function()
 		if netrw_open == true then
