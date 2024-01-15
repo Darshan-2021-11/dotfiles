@@ -36,7 +36,7 @@ done &
 
 # Setting wallpaper
 #while feh --bg-fill ~/downloads/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1); do sleep 5m; done &
-exec feh --bg-fill ~/.local/share/wallpapers/wallhaven-967rgd.jpg &
+feh --bg-fill ~/.local/share/wallpapers/wallhaven-967rgd.jpg &
 
 # Launch programs
 exec st -e tmux &
