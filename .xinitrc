@@ -36,7 +36,7 @@ done &
 
 # Setting wallpaper
 #while feh --bg-fill ~/downloads/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1); do sleep 5m; done &
-feh --bg-fill ~/.local/share/wallpapers/wallhaven-8oy372.jpg &
+feh --bg-fill ~/.local/share/wallpapers/wallhaven-967rgd.jpg &
 
 st -e tmux &
 firefox &

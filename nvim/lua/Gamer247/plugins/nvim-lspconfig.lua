@@ -4,7 +4,7 @@ local ensure_nvim_lspconfig = function()
 	local install_path = fn.stdpath('data') .. '/site/pack/plugins/start/nvim-lspconfig.nvim'
 	if fn.empty(fn.glob(install_path)) > 0 then
 		vim.print("nvim-lspconfig is not installed. Installing it...")
-		fn.system({'proxychains', 'git', 'clone', '--depth', '1', 'https://github.com/neovim/nvim-lspconfig', install_path})
+		fn.system({'git', 'clone', '--depth', '1', 'https://github.com/neovim/nvim-lspconfig', install_path})
 		-- Only set if stored in `/pack` in any level at `/opt` level instead of `/start`
 		--vim.cmd [[packadd nvim-lspconfig.nvim]]
 		return true
