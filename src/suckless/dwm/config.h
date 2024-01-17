@@ -9,7 +9,7 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 // static const char dmenufont[]       = "Monospace:size=12";
 static const char *fonts[]          = { "SauceCodePro Nerd Font:size=9" };
 static const char dmenufont[]       = "SauceCodePro Nerd Font:size=9";
-static const char col_gray1[]       = "#16161E";
+static const char col_gray1[]       = "#1A1B26";
 static const char col_gray2[]       = "#16161E";
 static const char col_gray3[]       = "#B4D0E9";
 static const char col_gray4[]       = "#B4D0E9";
