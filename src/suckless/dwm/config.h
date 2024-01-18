@@ -75,8 +75,9 @@ static const char *voldowncmd[] = { "volume", "d", "2", NULL };
 static const char *brupcmd[] = { "sudo", "brightness", "i", "2", NULL };
 static const char *brdowncmd[] = { "sudo", "brightness", "d", "2", NULL };
 // add the path to the screenshot folder in the 2nd argument for screenshots using `scrot` program
-static const char *prtscfullcmd[] = { "scrot", "-q", "100", NULL };
-static const char *prtscselectcmd[] = { "scrot", "-q", "100", "-s", NULL };
+// also, replace 'Gamer247' with your username
+static const char *prtscfullcmd[] = { "scrot", "-q", "100", "/home/Gamer247/screenshots/%m-%d-%Y-%H%M%S_$wx$h.png", NULL };
+static const char *prtscselectcmd[] = { "scrot", "-q", "100", "-s", "/home/Gamer247/screenshots/%m-%d-%Y-%H%M%S_$wx$h.png", NULL };
 
 static const Key keys[] = {
   // default key bindings

@@ -36,22 +36,19 @@ done &
 
 # Setting wallpaper
 #while feh --bg-fill ~/downloads/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1); do sleep 5m; done &
-feh --bg-fill ~/.local/share/wallpapers/wallhaven-967rgd.jpg &
+feh --bg-fill ~/.local/share/wallpapers/wallhaven-8oy372.jpg &
 
 # Launch programs
 exec st -e tmux &
 exec firefox &
 
 exec xautolock -noclose -time 5 -locker "systemctl suspend;slock;" &
-# Enable java applications support
-export AWT_TOOLKIT=MToolkit
-export _JAVA_AWT_WM_NONREPARENTING=1
 
 # Start dwm, with hot reload
 while true; do
-# 	# Log stderror to a file 
-# 	dwm 2> ~/.dwm.log
-# 	# No error logging
-# 	#dwm >/dev/null 2>&1
+	# Log stderror to a file 
+	dwm 2> ~/.dwm.log
+	# No error logging
+	#dwm >/dev/null 2>&1
 done
-exec dwm
+# exec dwm
