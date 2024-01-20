@@ -8,17 +8,8 @@ xrandr --output Virtual-1 --mode 1366x768 &
 # picom -f &
 
 # Update status bar of dwm
-date_format() {
-	dateFormat="$(date '+%r %a %d %b %y')"
-	echo -e "$dateFormat"
-}
-
-network_format() {
-	echo $network_info
-}
-
 while :; do
-	# internet_speed
+	# update internet_speed
 	rx1=$(cat /sys/class/net/wlp9s0/statistics/rx_bytes)
 	tx1=$(cat /sys/class/net/wlp9s0/statistics/tx_bytes)
 	sleep 1s
@@ -27,28 +18,28 @@ while :; do
 
 	network_info="󰁅 $((rx2-rx1)) B/s, 󰁝 $((tx2-tx1)) B/s"
 
-	rx1=$rx2
-	tx1=$tx2
-
 	# dwm status bar
-	xprop -root -set WM_NAME " $(network_format) | $(volume) | $(brightness) | $(battery) | $(date_format)"
+	xprop -root -set WM_NAME " $(echo $network_info) | $(volume) | $(brightness) | $(battery) | $(date '+%r %a %d %b %y')"
 done &
 
 # Setting wallpaper
-#while feh --bg-fill ~/downloads/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1); do sleep 5m; done &
-feh --bg-fill ~/.local/share/wallpapers/wallhaven-8oy372.jpg &
+# changing wallpaper at some time interval
+#while feh --bg-fill ~/.local/share/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1); do sleep 5m; done &
+# setting wallpaper once per login
+exec feh --bg-fill ~/.local/share/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1) &
 
 # Launch programs
 exec st -e tmux &
 exec firefox &
 
+# sleep after inactivity
 exec xautolock -noclose -time 5 -locker "systemctl suspend;slock;" &
 
 # Start dwm, with hot reload
-while true; do
-	# Log stderror to a file 
-	dwm 2> ~/.dwm.log
-	# No error logging
-	#dwm >/dev/null 2>&1
-done
-# exec dwm
+# while true; do
+# 	# Log stderror to a file 
+# 	dwm 2> ~/.dwm.log
+# 	# No error logging
+# 	#dwm >/dev/null 2>&1
+# done
+exec dwm
