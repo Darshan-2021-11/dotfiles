@@ -33,7 +33,9 @@ exec st -e tmux &
 exec firefox &
 
 # sleep after inactivity
-exec xautolock -noclose -time 5 -locker "systemctl suspend;slock;" &
+# disallow sleep when mouse cursor is at any corner of screen using the
+# '-corners ----' command, useful while watching videos
+exec xautolock -time 2 -locker "systemctl suspend; slock;" -corners ---- &
 
 # Start dwm, with hot reload
 # while true; do
