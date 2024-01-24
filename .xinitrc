@@ -27,6 +27,8 @@ done &
 #while feh --bg-fill ~/.local/share/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1); do sleep 5m; done &
 # setting wallpaper once per login
 exec feh --bg-fill ~/.local/share/wallpapers/$(ls ~/.local/share/wallpapers/ | shuf -n 1) &
+# adjust blue light filter
+redshift -O3000 -v
 
 # Launch programs
 exec st -e tmux &
