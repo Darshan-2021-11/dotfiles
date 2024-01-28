@@ -1,8 +1,5 @@
 #!/bin/bash
 
 folder=~/programming/cp;
-find $folder -type f -executable -not -path */.git/* -print | sed -e "s/^\.\\///g" > tmpexecutables;
-# -e "s/ /\\\ /g" -e "s/(/\\\(/" -e "s/)/\\\)/"
+find $folder -type f -executable -not -path */.git/* -print | sed -e "s/^\.\\///g" | while read -r line; do rm "$line"; done
 
-while read -r line; do rm "$line"; done < tmpexecutables;
-rm tmpexecutables;
