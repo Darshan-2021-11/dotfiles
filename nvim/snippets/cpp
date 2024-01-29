@@ -1,4 +1,4 @@
-#ifdef ONPC
+#ifndef ONLINE_JUDGE
 	#define _GLIBCXX_DEBUG
 #endif
 
@@ -8,6 +8,7 @@
 
 using namespace std;
 using namespace __gnu_pbds;
+
 using u32 = unsigned int;
 using ll = long long;
 using ld = long double;
@@ -16,29 +17,18 @@ using indexed_set = tree<int, null_type, less<int>, rb_tree_tag, tree_order_stat
 //mt19937 rnd(239);
 //mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
 
-int solve() {
-
-	return 0;
-}
-
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
-	int T = 1e9;
+	cout.precision(15);
+
+	u32 T = 1;
 	cin >> T;
-	#ifdef ONPC
-		cout << "__________________________" << '\n';
-	#endif
-	for (int i = 0; i < T; i++) {
-		if (solve()) {
-			break;
-		}
-		#ifdef ONPC
-			cout << "__________________________" << '\n';
-		#endif
+
+	while (T--) {
+	
 	}
-	#ifdef ONPC
-		cerr << endl << "finished in " << clock() * 1.0 / CLOCKS_PER_SEC <<
-		"second(s)" << '\n';
+	#ifndef ONLINE_JUDGE
+		cout << '\n' << "finished in " << clock() * 1.0 / CLOCKS_PER_SEC << "second(s)" << '\n';
 	#endif
 }
