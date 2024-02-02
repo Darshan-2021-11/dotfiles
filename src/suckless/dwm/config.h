@@ -5,10 +5,10 @@ static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 8;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-// static const char *fonts[]          = { "Monospace:size=10" };
-// static const char dmenufont[]       = "Monospace:size=12";
 static const char *fonts[]          = { "SauceCodePro Nerd Font:size=9" };
 static const char dmenufont[]       = "SauceCodePro Nerd Font:size=9";
+
+/* Tokyonight_night theme colours from https://github.com/folke/tokyonight.nvim */
 static const char col_gray1[]       = "#1A1B26";
 static const char col_gray2[]       = "#16161E";
 static const char col_gray3[]       = "#B4D0E9";
@@ -142,4 +142,3 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
