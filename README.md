@@ -17,6 +17,6 @@ This is my configuration files of my pc.
 * pulseauto (Sound Server)
 * firefox (Browser)
 
-- Not used in custom scripts
+### Not used in custom scripts
 * mpv (Video Player)
 * xclip (Clipboard Manager)
