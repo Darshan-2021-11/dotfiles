@@ -168,3 +168,4 @@ vim.o.statusline = " "
 .. "%p%%  "
 .. " >> "
 ]]
+vim.opt.statusline = "%<%t %m%r%h%w%q [%n]%=%-14.(%l,%c%V%) %P"

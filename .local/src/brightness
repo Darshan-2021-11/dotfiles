@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 1) `${n}` output the `n` th argument provided to the bash script.
 #	 Trivia: When n = 0, it shows the script name run.
@@ -59,3 +59,5 @@ then
 else
   echo "Invalid number of arguments."
 fi
+
+unset brightness current_brightness max_brightness brightness_percentage max_brightness_percentage

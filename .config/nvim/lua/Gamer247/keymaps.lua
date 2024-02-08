@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", }, {
 		local executable = vim.fn.expand('%:p:r')
 		local file = vim.fn.expand('%:p')
 
-		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>28jA<Tab>', config_path), { noremap = true, silent = true, })
+		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>29jA<Tab>', config_path), { noremap = true, silent = true, })
 		-- compile and run
 		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -std=c++20 -Wall -Wextra -Wshadow -O2 "%s" -o "%s" && "%s" < "%s/inp"<CR>', file, executable, executable, path), { noremap = true, silent = true, })
 		-- run compiled

@@ -14,8 +14,9 @@ This is my configuration files of my pc.
 * xautolock (Screen Locker)
 * slock (For Login)
 * redshift (Night Light)
-* pulseauto (Sound Server)
+* pulseaudio (Sound Server)
 * firefox (Browser)
+* adwaita-icon-theme (Used in scripts, GTK-3 dependancy)
 
 ### Not used in custom scripts
 * mpv (Video Player)

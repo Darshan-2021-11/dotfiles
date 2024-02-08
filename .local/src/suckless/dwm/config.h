@@ -67,8 +67,8 @@ static const char *termcmd[]  = { "st", NULL };
 // for more info about amixer
 static const char *mutecmd[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
 // `volume` & `brightness` executables are my shell commands, found in dotfiles repo
-static const char *volupcmd[] = { "volume", "i", "2", NULL };
-static const char *voldowncmd[] = { "volume", "d", "2", NULL };
+static const char *volupcmd[] = { "pactl", "set-sink-volume", "0", "+1%", NULL };
+static const char *voldowncmd[] = { "pactl", "set-sink-volume", "0", "-1%", NULL };
 // Note: For the brightness command to work, you need to add the following to `/etc/sudoers` file
 // `$username ALL=(ALL) NOPASSWD: /path/to/brightness`
 // where username should be your username where you are setting dwm up, and you have the path to brightness present in `~/.local/bin/` in my dotfiles
