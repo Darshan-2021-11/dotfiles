@@ -1,11 +1,5 @@
 local k = vim.keymap.set
 
---[[ Cursor centred while scrolling
-not used `zz` because if caps lock is on, it will save and quit
-]]
-k("n", "<C-d>", "<C-d>z.")
-k("n", "<C-u>", "<C-u>z.")
-
 -- Tab bindings
 k("n", "<leader>toa", ":tabnew ", { noremap = true, }) -- opens a file relative to current path(path where neovim was opened) or absolute path
 k("n", "<leader>tor", ":tabnew %:p:h/", { noremap = true, }) -- opens a file relative to current file
@@ -13,8 +7,6 @@ k("n", "<leader>tor", ":tabnew %:p:h/", { noremap = true, }) -- opens a file rel
 k("n", "<leader>tc", ":tabclose<CR>", { noremap = true, }) -- , this closes the tab but does not close buffers when used without close hidden buffer autocmd commented
 
 -- Automatically close brackets, parentheses, and quotes
-k("i", "'", "''<left>", { noremap = true, })
-k("i", '"', '""<left>', { noremap = true, })
 k("i", "(", "()<left>", { noremap = true, })
 k("i", "[", "[]<left>", { noremap = true, })
 k("i", "{", "{}<left>", { noremap = true, })
@@ -30,11 +22,12 @@ vim.api.nvim_create_autocmd({ "BufEnter", }, {
 		local executable = vim.fn.expand('%:p:r')
 		local file = vim.fn.expand('%:p')
 
-		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>29jA<Tab>', config_path), { noremap = true, silent = true, })
+		-- `buffer = true` in opts make the keymaps only local to these buffers
+		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>29jA<Tab>', config_path), { buffer = true, noremap = true, silent = true, })
 		-- compile and run
-		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -std=c++20 -Wall -Wextra -Wshadow -O2 "%s" -o "%s" && "%s" < "%s/inp"<CR>', file, executable, executable, path), { noremap = true, silent = true, })
+		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -std=c++20 -Wall -Wextra -Wshadow -O2 "%s" -o "%s" && "%s" < "%s/inp"<CR>', file, executable, executable, path), { buffer = true, noremap = true, silent = true, })
 		-- run compiled
-		k("n", "<leader>rc", string.format('<ESC>:!"%s" < "%s/inp"<CR>', executable, path), { noremap = true, silent = true, })
+		k("n", "<leader>rc", string.format('<ESC>:!"%s" < "%s/inp"<CR>', executable, path), { buffer = true, noremap = true, silent = true, })
 	end
 })
 
