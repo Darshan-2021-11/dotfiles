@@ -23,11 +23,19 @@ vim.api.nvim_create_autocmd({ "BufEnter", }, {
 		local file = vim.fn.expand('%:p')
 
 		-- `buffer = true` in opts make the keymaps only local to these buffers
-		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>29jA<Tab>', config_path), { buffer = true, noremap = true, silent = true, })
+		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>27jA<Tab>', config_path), { buffer = true, noremap = true, silent = true, })
 		-- compile and run
 		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -std=c++20 -Wall -Wextra -Wshadow -O2 "%s" -o "%s" && "%s" < "%s/inp"<CR>', file, executable, executable, path), { buffer = true, noremap = true, silent = true, })
 		-- run compiled
 		k("n", "<leader>rc", string.format('<ESC>:!"%s" < "%s/inp"<CR>', executable, path), { buffer = true, noremap = true, silent = true, })
+
+		-- Use precompiled headers for faster compilation. Use the same flags and
+		-- macros you use during the compilation of your projects.
+		-- e.g. for the cp template I use in the snippets of the neovim,
+		-- precompiled bits/stdc++.h and ext/pb_ds/assoc_container.hpp using the
+		-- the command
+		-- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D_GLIBCXX_DEBUG=" " {}
+		-- replacing {} with header name in their respective directories
 	end
 })
 
