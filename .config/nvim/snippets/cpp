@@ -17,9 +17,8 @@ using ld = long double;
 //mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
 
 int main() {
-	ios::sync_with_stdio(false), cin.tie(nullptr);
-	cout << std::fixed;
-	cout.precision(15);
+	ios::sync_with_stdio(false), cin.tie(nullptr), 
+	cout.precision(15), cout.setf(ios::fixed);
 
 	u32 T = 1;
 	cin >> T;
