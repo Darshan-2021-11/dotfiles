@@ -25,7 +25,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", }, {
 		-- `buffer = true` in opts make the keymaps only local to these buffers
 		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>26jA<Tab>', config_path), { buffer = true, noremap = true, silent = true, })
 		-- compile and run
-		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -std=c++20 -Wall -Wextra -Wshadow -Winvalid-pch -O2 "%s" -o "%s" && "%s" < "%s/inp"<CR>', file, executable, executable, path), { buffer = true, noremap = true, silent = true, })
+		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -std=c++20 -Wall -Wextra -Wshadow -O2 "%s" -o "%s" && "%s" < "%s/inp"<CR>', file, executable, executable, path), { buffer = true, noremap = true, silent = true, })
 		-- run compiled
 		k("n", "<leader>rc", string.format('<ESC>:!"%s" < "%s/inp"<CR>', executable, path), { buffer = true, noremap = true, silent = true, })
 
@@ -36,6 +36,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", }, {
 		-- the command
 		-- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D_GLIBCXX_DEBUG=" " {}
 		-- replacing {} with header name in their respective directories
+		-- Use `-Winvalid-pch` to check warnings related to pre compiled headers
 	end
 })
 

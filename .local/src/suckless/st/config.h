@@ -5,9 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-// static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-// static char *font = "SauceCodePro Nerd Font:style=Semibold:pixelsize=12:antialias=true:autohint=true";
-static char *font = "SauceCodePro Nerd Font:style=Medium:pixelsize=14:antialias=true:autohint=true";
+// static char *font = "SauceCodePro Nerd Font:style=Medium:pixelsize=14:antialias=true:autohint=true";
+static char *font = "monospace:style=Medium:pixelsize=18:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -18,7 +17,7 @@ static int borderpx = 2;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/bin/sh";
+static char *shell = "/bin/bash";
 char *utmp = NULL;
 /* scroll program: to enable use a string like "scroll" */
 char *scroll = NULL;
