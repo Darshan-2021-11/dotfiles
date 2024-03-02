@@ -4,8 +4,12 @@ setxkbdmap ch &
 # Display Resolution
 xrandr --output Virtual-1 --mode 1366x768 &
 
-# Run custom script
-startup.sh &
+# Import custom script functions, and run
+. startup.sh
+# INITIAL SETUP
+init_setup &
+# DAEMONS
+daemon_setup &
 
 # Enable java applications support
 export AWT_TOOLKIT=MToolkit

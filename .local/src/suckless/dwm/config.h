@@ -68,15 +68,20 @@ static const char *termcmd[]  = { "st", NULL };
 // This is my setting for `pulseaudio`, you can refer the link below
 // https://www.reddit.com/r/suckless/comments/c64pv8/controlling_audiobacklight_through_keys_in_dwm/es69te5/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 // for more info about amixer
-static const char *mutecmd[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
+// static const char *mutecmd[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
+static const char *mutecmd[] = { "/bin/bash", "-c", "pactl set-sink-mute 0 toggle && status_bar", NULL };
 // `volume` & `brightness` executables are my shell commands, found in dotfiles repo
-static const char *volupcmd[] = { "pactl", "set-sink-volume", "0", "+1%", NULL };
-static const char *voldowncmd[] = { "pactl", "set-sink-volume", "0", "-1%", NULL };
+//static const char *volupcmd[] = { "pactl", "set-sink-volume", "0", "+1%", NULL };
+//static const char *voldowncmd[] = { "pactl", "set-sink-volume", "0", "-1%", NULL };
+static const char *volupcmd[] = { "/bin/bash", "-c", "pactl set-sink-volume 0 +1% && status_bar", NULL };
+static const char *voldowncmd[] = { "/bin/bash", "-c", "pactl set-sink-volume 0 -1% && status_bar", NULL };
 // Note: For the brightness command to work, you need to add the following to `/etc/sudoers` file
 // `$username ALL=(ALL) NOPASSWD: /path/to/brightness`
 // where username should be your username where you are setting dwm up, and you have the path to brightness present in `~/.local/bin/` in my dotfiles
-static const char *brupcmd[] = { "sudo", "brightness", "i", "2", NULL };
-static const char *brdowncmd[] = { "sudo", "brightness", "d", "2", NULL };
+//static const char *brupcmd[] = { "sudo", "brightness", "i", "2", NULL };
+//static const char *brdowncmd[] = { "sudo", "brightness", "d", "2", NULL };
+static const char *brupcmd[] = { "/bin/bash", "-c", "sudo brightness i 2 && status_bar", NULL };
+static const char *brdowncmd[] = { "/bin/bash", "-c", "sudo brightness d 2 && status_bar", NULL };
 // add the path to the screenshot folder in the 2nd argument for screenshots using `scrot` program
 // also, replace 'Gamer247' with your username
 static const char *prtscfullcmd[] = { "scrot", "-q", "100", "/home/Gamer247/screenshots/%m-%d-%Y-%H%M%S_$wx$h.png", NULL };

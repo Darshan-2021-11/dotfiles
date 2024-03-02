@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/bas
+
+read MAX_BRIGHTNESS < "/sys/class/backlight/intel_backlight/max_brightness"
 
 init_setup() {
 	# launch application programs
@@ -72,12 +74,15 @@ handle_battery() {
 	read capacity < "/sys/class/power_supply/BAT1/capacity"
 	read state < "/sys/class/power_supply/BAT1/status"
 
-	if [ $capacity -le 20 ]; then
-			if [[ $state == "Discharging" ]]; then
-				notifier "/usr/share/icons/Adwaita/symbolic/status/battery-level-0-symbolic.svg" "Battery Low" "Plug in your charger!" 2 1
-			fi
+	if [[ $state == "Discharging" ]]; then
+		state=""
+		if [ $capacity -le 20 ]; then
+			notifier "/usr/share/icons/Adwaita/symbolic/status/battery-level-0-symbolic.svg" "Battery Low" "Plug in your charger!" 2 3
+		fi
+	else
+		state="⚡"
 	fi
-	echo "Bat: $capacity% $state"
+	echo "Bat: $capacity%$state"
 }
 
 #update_status_bar() {
@@ -85,7 +90,7 @@ handle_battery() {
 #	read rx1 < "/sys/class/net/$network_interface/statistics/rx_bytes"
 #	read tx1 < "/sys/class/net/$network_interface/statistics/tx_bytes"
 #	
-#	read max_brightness < "/sys/class/backlight/intel_backlight/max_brightness"
+#	read MAX_BRIGHTNESS < "/sys/class/backlight/intel_backlight/max_brightness"
 #	
 #	while :; do
 #		sleep 1s
@@ -105,8 +110,8 @@ handle_battery() {
 #		volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"Vol: muted"; exit; } NR==10 { print "Vol:",$5; exit; }')
 #		# update brightness
 #		read current_brightness < "/sys/class/backlight/intel_backlight/brightness"
-#		brightness_percentage="󰃟 $(( 100 * current_brightness / max_brightness ))%"
-#		brightness_percentage="Bright: $(( 100 * current_brightness / max_brightness ))%"
+#		brightness_percentage="󰃟 $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
+#		brightness_percentage="Bright: $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
 #	
 #		# update date and time info
 #		date_time_format=$(date '+%r %a %d %b %y')
@@ -116,35 +121,32 @@ handle_battery() {
 #	done
 #}
 
+status_bar() {
+
+	# read MAX_BRIGHTNESS < "/sys/class/backlight/intel_backlight/max_brightness"
+	# update volume
+	#		volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"󰝟"; exit; } NR==10 { print "󰕾",$5; exit; }')
+	volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"Vol: muted"; exit; } NR==10 { print "Vol:",$5; exit; }')
+	# update brightness
+	read current_brightness < "/sys/class/backlight/intel_backlight/brightness"
+	#		brightness_percentage="󰃟 $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
+	brightness_percentage="Bright: $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
+
+	# update date and time info
+	date_time_format=$(date '+%r %a %d %b %y')
+
+	# dwm status bar
+	xprop -root -set WM_NAME " $volume | $brightness_percentage | $(handle_battery) | $date_time_format"
+}
 
 update_status_bar() {
-	network_interface="wlp9s0"
-	read rx1 < "/sys/class/net/$network_interface/statistics/rx_bytes"
-	read tx1 < "/sys/class/net/$network_interface/statistics/tx_bytes"
-
-	read max_brightness < "/sys/class/backlight/intel_backlight/max_brightness"
-
 	while :; do
 		sleep 5s
-
-		# update volume
-#		volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"󰝟"; exit; } NR==10 { print "󰕾",$5; exit; }')
-		volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"Vol: muted"; exit; } NR==10 { print "Vol:",$5; exit; }')
-		# update brightness
-		read current_brightness < "/sys/class/backlight/intel_backlight/brightness"
-#		brightness_percentage="󰃟 $(( 100 * current_brightness / max_brightness ))%"
-		brightness_percentage="Bright: $(( 100 * current_brightness / max_brightness ))%"
-
-		# update date and time info
-		date_time_format=$(date '+%r %a %d %b %y')
-
-		# dwm status bar
-		xprop -root -set WM_NAME " $volume | $brightness_percentage | $(handle_battery) | $date_time_format"
+		status_bar
 	done
 }
 
-# INITIAL SETUP
-init_setup &
-
-# DAEMONS
-daemon_setup &
+# Export status_bar and handle_battery function to use when updating brightness and volume
+export MAX_BRIGHTNESS
+export -f handle_battery
+export -f status_bar
