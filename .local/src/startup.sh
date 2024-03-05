@@ -82,7 +82,7 @@ handle_battery() {
 	else
 		state="⚡"
 	fi
-	echo "Bat: $capacity%$state"
+	echo "∎: $capacity%$state"
 }
 
 #update_status_bar() {
@@ -107,11 +107,11 @@ handle_battery() {
 #	
 #		# update volume
 #		volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"󰝟"; exit; } NR==10 { print "󰕾",$5; exit; }')
-#		volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"Vol: muted"; exit; } NR==10 { print "Vol:",$5; exit; }')
+#		volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"◀×: MUTE"; exit; } NR==10 { print "◀»:",$5; exit; }')
 #		# update brightness
 #		read current_brightness < "/sys/class/backlight/intel_backlight/brightness"
 #		brightness_percentage="󰃟 $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
-#		brightness_percentage="Bright: $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
+#		brightness_percentage="☀: $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
 #	
 #		# update date and time info
 #		date_time_format=$(date '+%r %a %d %b %y')
@@ -126,11 +126,11 @@ status_bar() {
 	# read MAX_BRIGHTNESS < "/sys/class/backlight/intel_backlight/max_brightness"
 	# update volume
 	#		volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"󰝟"; exit; } NR==10 { print "󰕾",$5; exit; }')
-	volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"Vol: muted"; exit; } NR==10 { print "Vol:",$5; exit; }')
+	volume=$(pactl list sinks | awk -v mute=0 'NR<9 { next; } NR==9 && $2 != "no" { print"◀×: MUTE"; exit; } NR==10 { print "◀»:",$5; exit; }')
 	# update brightness
 	read current_brightness < "/sys/class/backlight/intel_backlight/brightness"
 	#		brightness_percentage="󰃟 $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
-	brightness_percentage="Bright: $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
+	brightness_percentage="☀: $(( 100 * current_brightness / MAX_BRIGHTNESS ))%"
 
 	# update date and time info
 	date_time_format=$(date '+%r %a %d %b %y')

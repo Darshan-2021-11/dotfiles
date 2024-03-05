@@ -7,8 +7,9 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 //static const char *fonts[]          = { "SauceCodePro Nerd Font:size=9" };
 //static const char dmenufont[]       = "SauceCodePro Nerd Font:size=9";
-static const char *fonts[]          = { "monospace:style=Medium:pixelsize=14:antialias=true:autohint=true" };
-static const char dmenufont[]       = "monospace:style=Medium:pixelsize=14:antialias=true:autohint=true";
+static const char *fonts[]          = { "FreeMono:style=Medium:pixelsize=12:antialias=true:autohint=true" };
+static const char dmenufont[]       = "FreeMono:style=Medium:pixelsize=12:antialias=true:autohint=true";
+	
 
 
 /* Tokyonight_night theme colours from https://github.com/folke/tokyonight.nvim */

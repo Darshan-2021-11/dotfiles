@@ -21,3 +21,5 @@ This is my configuration files of my pc.
 ### Not used in custom scripts
 * mpv (Video Player)
 * xclip (Clipboard Manager)
+
+Font: FreeMono
