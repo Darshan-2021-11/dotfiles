@@ -2,7 +2,7 @@
 setxkbdmap ch &
 
 # Display Resolution
-xrandr --output Virtual-1 --mode 1366x768 &
+# xrandr --output Virtual-1 --mode 1366x768 &
 
 # Import custom script functions, and run
 . startup.sh

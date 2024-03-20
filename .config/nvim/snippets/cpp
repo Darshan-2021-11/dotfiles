@@ -23,9 +23,9 @@ int main() {
 	u32 T = 1;
 	cin >> T;
 
-	while (T--) {
+	while (T--) []() {
 	
-	}
+	}();
 #ifndef ONLINE_JUDGE
 	cout << '\n' << "finished in " << clock() * 1.0 / CLOCKS_PER_SEC << "second(s)" << '\n';
 #endif
