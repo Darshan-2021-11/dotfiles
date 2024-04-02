@@ -37,7 +37,7 @@ local function set_CP_cpp_keymaps()
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>rc', '<ESC>:!"' .. executable .. '" < "' .. path .. '/inp" > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
   -- Use precompiled headers for faster compilation. Use the same flags and macros you use during the compilation of your projects.
   -- e.g. for the cp template I use in the snippets of the neovim, precompiled bits/stdc++.h and ext/pb_ds/assoc_container.hpp using the command
-  -- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D{definitiona} {}
+  -- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D{definitions} {}
   -- replacing {} with header name in their respective directories, use `-Winvalid-pch` to check warnings related to pre compiled headers
 
 end
@@ -51,7 +51,7 @@ vim.api.nvim_create_user_command("CP", function()
   if (vim.bo.filetype == 'cpp') then
     set_CP_cpp_keymaps()
   end
-  -- Open input and output file to be used inn keymaps
+  -- Open input and output file to be used in keymaps
   local winnr = vim.api.nvim_get_current_win()
   vim.fn.execute('belowright 50vsplit out')
   vim.fn.execute('leftabove split inp')
