@@ -15,7 +15,7 @@ init_setup() {
 
 daemon_setup() {
 	# auto sleep after inactivity
-	xautolock -time 5 -locker "systemctl suspend; slock;" -corners ---- &
+	xautolock -time 5 -locker "systemctl suspend; slock;" -corners ---- -cornersize 20 &
 
 	# update status bar of dwm
 	update_status_bar &

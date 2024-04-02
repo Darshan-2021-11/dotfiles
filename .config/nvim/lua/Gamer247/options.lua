@@ -32,6 +32,7 @@ o.relativenumber = true
 
 -- configuring indentation
 o.tabstop = 2
+o.expandtab = true
 o.shiftwidth = 2
 o.softtabstop = 2
 

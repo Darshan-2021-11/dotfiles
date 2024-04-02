@@ -5,9 +5,10 @@
 # 2) `$@` outputs the list of arguments provided separated by space.
 # 3) `$#` outptus the total number of command line arguments passed to the bash script.
 
-current_brightness=$(cat /sys/class/backlight/intel_backlight/brightness)
-max_brightness=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+read current_brightness < "/sys/class/backlight/intel_backlight/brightness"
+read max_brightness < "/sys/class/backlight/intel_backlight/max_brightness"
 
+<< 'END_COMMENT'
 brightness_percentage=$((100 * $current_brightness / $max_brightness))
 
 set_brightness_percentage() {
@@ -24,8 +25,7 @@ set_brightness_percentage() {
 		echo "maximum: $max_brightness_percentage"
 	fi
 
-	echo "Brightness level set to"
-  echo $((brightness_percentage * max_brightness / 100)) | sudo tee /sys/class/backlight/intel_backlight/brightness
+  echo $((brightness_percentage * max_brightness / 100)) | sudo tee /sys/class/backlight/intel_backlight/brightness >/dev/null
 }
 
 if [ $# -eq 0 ]
@@ -59,5 +59,35 @@ then
 else
   echo "Invalid number of arguments."
 fi
+END_COMMENT
 
-unset brightness current_brightness max_brightness brightness_percentage max_brightness_percentage
+if [ $# -eq 1 ]; then
+	updated_brightness="$1"
+elif [ $# -eq 2 ]; then
+	case "$1" in
+		"i")
+			updated_brightness=$((current_brightness + 1))
+				;;
+		"d")
+			updated_brightness=$((current_brightness - 1))
+				;;
+		*)
+				echo "Invalid input: $1"
+				echo "'i' for incrementing current brightness"
+				echo "'d' for decrementing current brightness"
+				exit 1
+				;;
+	esac
+else
+	echo "Invalid number of arguments."
+	exit 1
+fi
+
+if [ $updated_brightness -le 1 ]; then
+	echo "minimum: 2"
+elif [ $updated_brightness -gt $max_brightness ]; then
+	echo "maximum: $max_brightness"
+else
+	echo $updated_brightness | sudo tee /sys/class/backlight/intel_backlight/brightness >/dev/null
+fi
+unset current_brightness max_brightness updated_brightness

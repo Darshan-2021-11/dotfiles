@@ -1,47 +1,59 @@
-local k = vim.keymap.set
 
--- Tab bindings
-k("n", "<leader>toa", ":tabnew ", { noremap = true, }) -- opens a file relative to current path(path where neovim was opened) or absolute path
-k("n", "<leader>tor", ":tabnew %:p:h/", { noremap = true, }) -- opens a file relative to current file
---k("n", "<leader>tt", ":tab ", { noremap = true, }) -- opens a new tab for a comand specified here
-k("n", "<leader>tc", ":tabclose<CR>", { noremap = true, }) -- , this closes the tab but does not close buffers when used without close hidden buffer autocmd commented
+vim.api.nvim_set_keymap('n', '<leader>o', ':e ', { noremap = true, }) -- open a file relative to the current file
+vim.api.nvim_set_keymap('n', '<leader>O', ':e %:p:h/', { noremap = true, }) -- open a file relative to the current path
+vim.api.nvim_set_keymap('n', '<leader>bn', ':bnext<CR>', { noremap = true, }) -- switch to the next buffer
+vim.api.nvim_set_keymap('n', '<leader>bp', ':bprevious<CR>', { noremap = true, }) -- switch to the previous buffer
+vim.api.nvim_set_keymap('n', '<leader>bd', ':bdelete<CR>', { noremap = true, }) -- delete the current buffer from memory
+--[[
+vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew ', { noremap = true, }) -- opens a file relative to current path(path where neovim was opened) or absolute path
+vim.api.nvim_set_keymap('n', '<leader>tO', ':tabnew %:p:h/', { noremap = true, }) -- opens a file relative to current file
+vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<CR>', { noremap = true, }) -- , this closes the tab but does not close buffers when used without close hidden buffer autocmd commented
+]]
 
 -- Automatically close brackets, parentheses, and quotes
-k("i", "(", "()<left>", { noremap = true, })
-k("i", "[", "[]<left>", { noremap = true, })
-k("i", "{", "{}<left>", { noremap = true, })
-k("i", "{<CR>", "{<CR>}<ESC>O", { noremap = true, })
-
--- SNIPPETS
-vim.api.nvim_create_autocmd({ "BufEnter", }, {
-	group = vim.api.nvim_create_augroup('UserSnippets', { clear = false }),
-	pattern = { "*.cpp", },
-	callback = function()
-		local config_path = vim.fn.stdpath('config')
-		local path = vim.fn.expand('%:p:h')
-		local executable = vim.fn.expand('%:p:r')
-		local file = vim.fn.expand('%:p')
-
-		-- `buffer = true` in opts make the keymaps only local to these buffers
-		k("n", "<leader>cpp", string.format(':-1read %s/snippets/cpp<CR>26jA<Tab>', config_path), { buffer = true, noremap = true, silent = true, })
-		-- compile and run
-		k("n", "<leader>cr", string.format('<ESC>:w | !g++ -std=c++20 -Wall -Wextra -Wshadow -Winvalid-pch -O2 "%s" -o "%s" && "%s" < "%s/inp"<CR>', file, executable, executable, path), { buffer = true, noremap = true, silent = true, })
-		-- run compiled
-		k("n", "<leader>rc", string.format('<ESC>:!"%s" < "%s/inp"<CR>', executable, path), { buffer = true, noremap = true, silent = true, })
-
-		-- Use precompiled headers for faster compilation. Use the same flags and
-		-- macros you use during the compilation of your projects.
-		-- e.g. for the cp template I use in the snippets of the neovim,
-		-- precompiled bits/stdc++.h and ext/pb_ds/assoc_container.hpp using the
-		-- the command
-		-- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D_GLIBCXX_DEBUG=" " {}
-		-- replacing {} with header name in their respective directories
-		-- Use `-Winvalid-pch` to check warnings related to pre compiled headers
-	end
-})
+vim.api.nvim_set_keymap('i', '(', '()<left>', { noremap = true, })
+vim.api.nvim_set_keymap('i', '[', '[]<left>', { noremap = true, })
+vim.api.nvim_set_keymap('i', '{', '{}<left>', { noremap = true, })
+vim.api.nvim_set_keymap('i', '{<CR>', '{<CR>}<ESC>O', { noremap = true, })
 
 --[[ TODO: Plugins keymaps
 Open netrw in a 20% split in tree view
 only for one tab
 ]]
-k("n", "<leader>n", ":20Lex<CR>", { noremap = true, })
+vim.api.nvim_set_keymap('n', '<leader>n', ':20Lex<CR>', { noremap = true, })
+
+-- SNIPPETS
+local function set_CP_cpp_keymaps()
+  local config_path = vim.fn.stdpath('config')
+  local path = vim.fn.expand('%:p:h')
+  local executable = vim.fn.expand('%:p:r')
+  local file = vim.fn.expand('%:p')
+
+  -- `buffer = true` in opts make the keymaps only local to these buffers
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cpp', ':%d | -1read ' .. config_path .. '/snippets/cpp<CR>7jA', { noremap = true, silent = true, })
+  -- compile and run
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cr', '<ESC>:w | !g++ -std=c++20 -Wall -Wextra -Wshadow -Winvalid-pch -O2 "' .. file .. '" -o "' .. executable .. '" > "' .. path .. '/out" 2>&1 && "' .. executable .. '" < "' .. path .. '/inp" > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
+  -- run compiled
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>rc', '<ESC>:!"' .. executable .. '" < "' .. path .. '/inp" > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
+  -- Use precompiled headers for faster compilation. Use the same flags and macros you use during the compilation of your projects.
+  -- e.g. for the cp template I use in the snippets of the neovim, precompiled bits/stdc++.h and ext/pb_ds/assoc_container.hpp using the command
+  -- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D{definitiona} {}
+  -- replacing {} with header name in their respective directories, use `-Winvalid-pch` to check warnings related to pre compiled headers
+
+end
+
+vim.api.nvim_create_user_command("CP", function()
+  vim.api.nvim_create_autocmd({ "BufEnter", }, {
+    group = vim.api.nvim_create_augroup('UserSnippets', { clear = false }),
+    pattern = { "*.cpp", },
+    callback = set_CP_cpp_keymaps
+  })
+  if (vim.bo.filetype == 'cpp') then
+    set_CP_cpp_keymaps()
+  end
+  -- Open input and output file to be used inn keymaps
+  local winnr = vim.api.nvim_get_current_win()
+  vim.fn.execute('belowright 50vsplit out')
+  vim.fn.execute('leftabove split inp')
+  vim.api.nvim_set_current_win(winnr)
+end, {})
