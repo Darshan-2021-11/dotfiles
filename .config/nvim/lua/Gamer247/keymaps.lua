@@ -27,6 +27,11 @@ local function set_CP_cpp_keymaps()
   local path = vim.fn.expand('%:p:h')
   local executable = vim.fn.expand('%:p:r')
   local file = vim.fn.expand('%:p')
+
+  -- Use precompiled headers for faster compilation. Use the same flags and macros you use during the compilation of your projects.
+  -- e.g. for the cp template I use in the snippets of the neovim, precompiled bits/stdc++.h and ext/pb_ds/assoc_container.hpp using the command
+  -- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D{definitions} {}
+  -- replacing {} with header name in their respective directories, use `-Winvalid-pch` to check warnings related to pre compiled headers
   local compile = 'g++ -std=c++20 -Wall -Wextra -Wshadow -Winvalid-pch -O2 "' .. file .. '" -o "' .. executable .. '"'
   local run = '"' .. executable .. '" < "' .. path .. '/inp"'
 
@@ -36,11 +41,6 @@ local function set_CP_cpp_keymaps()
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', '<ESC>:w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
   -- run compiled
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>r', '<ESC>:!' .. run .. ' > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
-  -- Use precompiled headers for faster compilation. Use the same flags and macros you use during the compilation of your projects.
-  -- e.g. for the cp template I use in the snippets of the neovim, precompiled bits/stdc++.h and ext/pb_ds/assoc_container.hpp using the command
-  -- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D{definitions} {}
-  -- replacing {} with header name in their respective directories, use `-Winvalid-pch` to check warnings related to pre compiled headers
-
   -- compile inside shell
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<ESC>:w | belowright split term://bash<CR>i' .. compile .. '<CR>exit', { noremap = true, silent = true, })
   -- compile run shell
