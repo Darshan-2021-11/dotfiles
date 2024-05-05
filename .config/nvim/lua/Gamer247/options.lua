@@ -50,12 +50,13 @@ o.undofile = true
 
 -- text wrapping
 o.wrap = false
-o.textwidth = 78
+-- o.textwidth = 78
+o.textwidth = 118
 
 --[[ highlight column and setting its color(helpful for text wrapping)
 makes redrawing slower
 ]]
-o.colorcolumn:append({ "79", })
+o.colorcolumn:append({ "119", })
 vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
 
 -- use special symbols for whitespaces
@@ -113,6 +114,7 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 	<C-n>, <C-p> for auto completion from current file
 	<C-k> for spelling, set for current language used by `set spell`
 --]]
+		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
 		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
 		vim.api.nvim_feedkeys(key, "i", true)
 	end
