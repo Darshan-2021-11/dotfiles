@@ -9,6 +9,7 @@ This is my configuration files of my pc.
 * neovim (Text Editor)
     * clangd (C/C++ LSP)
     * typescript-language-server (JS/TS LSP)
+* dunst (Notification daemon)
 * feh (Image Viewer)
 * scrot (Screenshot Capture)
 * xautolock (Screen Locker)
