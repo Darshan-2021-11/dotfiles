@@ -6,7 +6,7 @@ vim.api.nvim_set_keymap('n', '<leader>bd', ':bdelete<CR>', { noremap = true, }) 
 --[[
 vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew ', { noremap = true, }) -- opens a file relative to current path(path where neovim was opened) or absolute path
 vim.api.nvim_set_keymap('n', '<leader>tO', ':tabnew %:p:h/', { noremap = true, }) -- opens a file relative to current file
-vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<CR>', { noremap = true, }) -- , this closes the tab but does not close buffers when used without close hidden buffer autocmd commented
+vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<CR>', { noremap = true, }) -- this closes the tab but does not close buffers when used without close hidden buffer autocmd commented
 ]]
 
 -- Automatically close brackets, parentheses, and quotes
