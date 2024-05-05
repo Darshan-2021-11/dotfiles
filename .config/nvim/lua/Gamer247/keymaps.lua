@@ -32,7 +32,7 @@ local function set_CP_cpp_keymaps()
 
   -- `buffer = true` in opts make the keymaps only local to these buffers
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cpp', ':%d | -1read ' .. config_path .. '/snippets/cpp<CR>9jA', { noremap = true, silent = true, })
-  -- compile and run
+  -- compile
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', '<ESC>:w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
   -- run compiled
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>r', '<ESC>:!' .. run .. ' > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
@@ -40,8 +40,11 @@ local function set_CP_cpp_keymaps()
   -- e.g. for the cp template I use in the snippets of the neovim, precompiled bits/stdc++.h and ext/pb_ds/assoc_container.hpp using the command
   -- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D{definitions} {}
   -- replacing {} with header name in their respective directories, use `-Winvalid-pch` to check warnings related to pre compiled headers
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<ESC>:w | belowright split term://bash<CR>i' .. compile .. '<CR>exit<CR>', { noremap = true, silent = true, })
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sr', '<ESC>:belowright split term://bash<CR>i' .. run .. '<CR>exit<CR>', { noremap = true, silent = true, })
+
+  -- compile inside shell
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<ESC>:w | belowright split term://bash<CR>i' .. compile .. '<CR>exit', { noremap = true, silent = true, })
+  -- compile run shell
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sr', '<ESC>:belowright split term://bash<CR>i' .. run .. '<CR>exit', { noremap = true, silent = true, })
 
 end
 
