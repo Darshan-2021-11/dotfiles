@@ -136,7 +136,7 @@ status_bar() {
 	date_time_format=$(date '+%r %a %d %b %y')
 
 	# dwm status bar
-	xprop -root -set WM_NAME " $volume | $brightness_percentage | $(handle_battery) | $date_time_format"
+	xprop -root -set WM_NAME " $volume ⵗ $brightness_percentage ⵗ $(handle_battery) ⵗ $date_time_format"
 }
 
 update_status_bar() {
