@@ -18,6 +18,7 @@ This is my configuration files of my pc.
 * pulseaudio (Sound Server)
 * firefox (Browser)
 * adwaita-icon-theme (Used in scripts, GTK-3 dependancy)
+* fastfetch (Showing off PC specs)
 
 ### Not used in custom scripts
 * mpv (Video Player)
