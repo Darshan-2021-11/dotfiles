@@ -15,7 +15,9 @@ init_setup() {
 
 daemon_setup() {
 	# auto sleep after inactivity
-	xautolock -time 5 -locker "systemctl suspend; slock;" -corners ---- -cornersize 20 &
+	xautolock -time 5 -locker "slock systemctl suspend -i" -corners ---- -cornersize 10 &
+	# also do not forget to add systemd sevice `slock@.service` to lock on suspend automatically
+	# https://wiki.archlinux.org/title/Slock
 
 	# update status bar of dwm
 	update_status_bar &

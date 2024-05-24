@@ -21,3 +21,5 @@ export PS1='\[\e[38;5;1m\][\u\[\e[38;5;6m\]@\h \[\e[38;5;4m\]\W]\[\e[1;38;5;3m\]
 
 # stop clear from clearing scrollback buffer
 alias clear='clear -x'
+# ask for confirmation before deletion of files
+alias rm='rm -i'
