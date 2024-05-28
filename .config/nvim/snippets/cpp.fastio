@@ -30,11 +30,11 @@ using u64 = unsigned long long;
 using ll = long long;
 using ld = long double;
 
-static u32 T
+static u32 TC
 int main() {
   //ios::sync_with_stdio(false), cin.tie(nullptr), cout.precision(15), cout.setf(ios::fixed);
-  cin >> T;
+  cin >> TC;
 
-  while (T--) {
+  while (TC--) {
   }
 }
