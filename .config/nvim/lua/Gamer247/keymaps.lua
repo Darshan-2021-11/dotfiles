@@ -22,9 +22,9 @@ only for one tab
 vim.api.nvim_set_keymap('n', '<leader>n', ':20Lex<CR>', { noremap = true, })
 
 -- SNIPPETS
+local path = '/tmp' --path storing `inp` and `out` files
 local function set_CP_cpp_keymaps()
   local config_path = vim.fn.stdpath('config')
-  local path = vim.fn.expand('%:p:h')
   local executable = vim.fn.expand('%:p:r')
   local file = vim.fn.expand('%:p')
 
@@ -61,7 +61,7 @@ vim.api.nvim_create_user_command("CP", function()
   end
   -- Open input and output file to be used in keymaps
   local winnr = vim.api.nvim_get_current_win()
-  vim.fn.execute('belowright 50vsplit out')
-  vim.fn.execute('leftabove split inp')
+  vim.fn.execute('belowright 50vsplit' .. path .. '/out')
+  vim.fn.execute('leftabove split ' .. path .. '/inp')
   vim.api.nvim_set_current_win(winnr)
 end, {})
