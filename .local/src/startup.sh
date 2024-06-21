@@ -7,7 +7,7 @@ init_setup() {
 	launch_apps &
 
 	# set wallpaper
-	update_wallpaper &
+	#update_wallpaper &
 
 	# blue_light_filter
 	redshift -O3000 -v &
