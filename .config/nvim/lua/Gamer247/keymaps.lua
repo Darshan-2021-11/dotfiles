@@ -61,7 +61,7 @@ vim.api.nvim_create_user_command("CP", function()
   end
   -- Open input and output file to be used in keymaps
   local winnr = vim.api.nvim_get_current_win()
-  vim.fn.execute('belowright 50vsplit' .. path .. '/out')
+  vim.fn.execute('belowright 50vsplit ' .. path .. '/out')
   vim.fn.execute('leftabove split ' .. path .. '/inp')
   vim.api.nvim_set_current_win(winnr)
 end, {})
