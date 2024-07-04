@@ -36,9 +36,8 @@ local function set_CP_cpp_keymaps()
   local run = '"' .. executable .. '" < "' .. path .. '/inp"'
 
   -- `buffer = true` in opts make the keymaps only local to these buffers
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>tcf', ':%d | -1read ' .. config_path .. '/snippets/tcf<CR>11jA', { noremap = true, silent = true, })
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>tcc', ':%d | -1read ' .. config_path .. '/snippets/tcc<CR>11jA', { noremap = true, silent = true, })
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>tac', ':%d | -1read ' .. config_path .. '/snippets/tac<CR>11jA', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppT', ':%d | -1read ' .. config_path .. '/snippets/cppT<CR>7jA', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppt', ':%d | -1read ' .. config_path .. '/snippets/cppt<CR>7jA', { noremap = true, silent = true, })
   -- compile
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', '<ESC>:w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
   -- run compiled
