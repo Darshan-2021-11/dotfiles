@@ -25,7 +25,7 @@ vim.api.nvim_set_keymap('n', '<leader>n', ':20Lex<CR>', { noremap = true, })
 local path = '/tmp' --path storing `inp` and `out` files
 local function set_CP_cpp_keymaps()
   local config_path = vim.fn.stdpath('config')
-  local executable = vim.fn.expand('%:p:r')
+  local executable = path .. '/' .. vim.fn.expand('%:p:t:r')
   local file = vim.fn.expand('%:p')
 
   -- Use precompiled headers for faster compilation. Use the same flags and macros you use during the compilation of your projects.
