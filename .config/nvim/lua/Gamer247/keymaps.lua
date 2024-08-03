@@ -1,15 +1,15 @@
 vim.api.nvim_set_keymap('n', '<leader>o', ':e ', { noremap = true, }) -- open a file relative to the current file
 vim.api.nvim_set_keymap('n', '<leader>O', ':e %:p:h/', { noremap = true, }) -- open a file relative to the current path
+vim.api.nvim_set_keymap('n', '<leader>bd', ':bdelete<CR>', { noremap = true, }) -- delete the current buffer from memory
 vim.api.nvim_set_keymap('n', '<leader>bn', ':bnext<CR>', { noremap = true, }) -- switch to the next buffer
 vim.api.nvim_set_keymap('n', '<leader>bp', ':bprevious<CR>', { noremap = true, }) -- switch to the previous buffer
-vim.api.nvim_set_keymap('n', '<leader>bd', ':bdelete<CR>', { noremap = true, }) -- delete the current buffer from memory
 --[[
 vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew ', { noremap = true, }) -- opens a file relative to current path(path where neovim was opened) or absolute path
 vim.api.nvim_set_keymap('n', '<leader>tO', ':tabnew %:p:h/', { noremap = true, }) -- opens a file relative to current file
 vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<CR>', { noremap = true, }) -- this closes the tab but does not close buffers when used without close hidden buffer autocmd commented
 ]]
 
--- Automatically close brackets, parentheses, and quotes
+-- Automatically close brackets & parentheses
 vim.api.nvim_set_keymap('i', '(', '()<left>', { noremap = true, })
 vim.api.nvim_set_keymap('i', '[', '[]<left>', { noremap = true, })
 vim.api.nvim_set_keymap('i', '{', '{}<left>', { noremap = true, })

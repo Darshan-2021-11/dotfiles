@@ -51,13 +51,12 @@ o.undofile = true
 -- text wrapping
 o.wrap = false
 -- o.textwidth = 78
-o.textwidth = 118
 
 --[[ highlight column and setting its color(helpful for text wrapping)
 makes redrawing slower
-]]
 o.colorcolumn:append({ "119", })
 vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
+]]
 
 -- use special symbols for whitespaces
 o.list = true
@@ -87,7 +86,8 @@ o.splitright = true
 o.lazyredraw = true
 
 -- setting spellcheck
-o.spell = true
+--o.spell = true
+o.spell = false
 
 -- completion settings
 o.completeopt:append({ "noselect", "menuone", })
@@ -171,4 +171,4 @@ vim.o.statusline = " "
 .. "%p%%  "
 .. " >> "
 ]]
-vim.opt.statusline = "%<%t %m%r%h%w%q [%n]%=%-14.(%l,%c%V%) %P"
+--vim.opt.statusline = "%<%t %m%r%h%w%q [%n]%=%-14.(%l,%c%V%) %P"

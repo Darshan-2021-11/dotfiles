@@ -17,13 +17,13 @@ set_brightness_percentage() {
   local min_brightness_percentage=$((2 + 1)) max_brightness_percentage=100
   brightness_percentage=$(($brightness_percentage + 1))
   echo $brightness_percentage
-	if [ $brightness_percentage -lt $min_brightness_percentage ]; then
-		brightness_percentage=$min_brightness_percentage
-		echo "minimum: $min_brightness_percentage"
-	elif [ $brightness_percentage -gt $max_brightness_percentage ]; then
-		brightness_percentage=$max_brightness_percentage
-		echo "maximum: $max_brightness_percentage"
-	fi
+  if [ $brightness_percentage -lt $min_brightness_percentage ]; then
+    brightness_percentage=$min_brightness_percentage
+    echo "minimum: $min_brightness_percentage"
+  elif [ $brightness_percentage -gt $max_brightness_percentage ]; then
+    brightness_percentage=$max_brightness_percentage
+    echo "maximum: $max_brightness_percentage"
+  fi
 
   echo $((brightness_percentage * max_brightness / 100)) | sudo tee /sys/class/backlight/intel_backlight/brightness >/dev/null
 }
@@ -31,63 +31,67 @@ set_brightness_percentage() {
 if [ $# -eq 0 ]
 then
 # echo brightness:$brightness_percentage%
-	echo 󰃟 $brightness_percentage%
+  echo 󰃟 $brightness_percentage%
 
 # manual setting of brightness from now on
 elif [ $# -eq 1 ]
 then
-	brightness_percentage=$1
-	set_brightness_percentage
+  brightness_percentage=$1
+  set_brightness_percentage
 elif [ $# -eq 2 ]
 then
-	case "$1" in
-		"i")
-			brightness_percentage=$(($brightness_percentage + $2))
-				;;
-		"d")
-			brightness_percentage=$(($brightness_percentage - $2))
-				;;
-		*)
-				# Handle cases where $1 is neither "i" nor "d"
-				echo "Invalid input: $1"
-				echo "'i' for incrementing current brightness"
-				echo "'d' for decrementing current brightness"
-				exit 1
-				;;
-	esac
-	set_brightness_percentage
+  case "$1" in
+    "i")
+      brightness_percentage=$(($brightness_percentage + $2))
+      ;;
+    "d")
+      brightness_percentage=$(($brightness_percentage - $2))
+      ;;
+    *)
+        # Handle cases where $1 is neither "i" nor "d"
+        echo "Invalid input: $1"
+        echo "'i' for incrementing current brightness"
+        echo "'d' for decrementing current brightness"
+        exit 1
+        ;;
+    esac
+  set_brightness_percentage
 else
   echo "Invalid number of arguments."
 fi
 END_COMMENT
 
-if [ $# -eq 1 ]; then
-	updated_brightness="$1"
+if [ $# -eq 0 ]; then
+  echo "$current_brightness"
+  unset current_brightness max_brightness
+  exit 0
+elif [ $# -eq 1 ]; then
+  updated_brightness="$1"
 elif [ $# -eq 2 ]; then
-	case "$1" in
-		"i")
-			updated_brightness=$((current_brightness + 1))
-				;;
-		"d")
-			updated_brightness=$((current_brightness - 1))
-				;;
-		*)
-				echo "Invalid input: $1"
-				echo "'i' for incrementing current brightness"
-				echo "'d' for decrementing current brightness"
-				exit 1
-				;;
-	esac
+  case "$1" in
+    "i")
+      updated_brightness=$((current_brightness + 1))
+      ;;
+    "d")
+      updated_brightness=$((current_brightness - 1))
+      ;;
+    *)
+      echo "Invalid input: $1"
+      echo "'i' for incrementing current brightness"
+      echo "'d' for decrementing current brightness"
+      exit 1
+      ;;
+  esac
 else
-	echo "Invalid number of arguments."
-	exit 1
+  echo "Invalid number of arguments."
+  exit 1
 fi
 
 if [ $updated_brightness -le 1 ]; then
-	echo "minimum: 2"
+  echo "minimum: 2"
 elif [ $updated_brightness -gt $max_brightness ]; then
-	echo "maximum: $max_brightness"
+  echo "maximum: $max_brightness"
 else
-	echo $updated_brightness | sudo tee /sys/class/backlight/intel_backlight/brightness >/dev/null
+  echo $updated_brightness | sudo tee /sys/class/backlight/intel_backlight/brightness >/dev/null
 fi
 unset current_brightness max_brightness updated_brightness
