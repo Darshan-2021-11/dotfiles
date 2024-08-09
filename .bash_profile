@@ -3,7 +3,7 @@
 #
 
 # show off comes first
-fastfetch
+#fastfetch
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
