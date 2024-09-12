@@ -33,11 +33,13 @@ local function set_CP_cpp_keymaps()
   -- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D{definitions} {}
   -- replacing {} with header name in their respective directories, use `-Winvalid-pch` to check warnings related to pre compiled headers
   local compile = 'g++ -std=c++17 -Wall -Wextra -Wshadow -Winvalid-pch -O2 "' .. file .. '" -o "' .. executable .. '"'
-  local run = '"' .. executable .. '" < "' .. path .. '/inp"'
+  -- increasing stack size to 256mb with ulimit as soft limit
+  -- for changing soft limit(-Ss), hard limit(-Hs), both(-s)
+  local run = 'ulimit -Ss 262114 && "' .. executable .. '" < "' .. path .. '/inp"'
 
   -- `buffer = true` in opts make the keymaps only local to these buffers
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppT', ':%d | -1read ' .. config_path .. '/snippets/cppT<CR>7jA', { noremap = true, silent = true, })
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppt', ':%d | -1read ' .. config_path .. '/snippets/cppt<CR>7jA', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppT', ':%d | -1read ' .. config_path .. '/snippets/cppT<CR>9jA', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppt', ':%d | -1read ' .. config_path .. '/snippets/cppt<CR>9jA', { noremap = true, silent = true, })
   -- compile
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', '<ESC>:w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
   -- run compiled
