@@ -6,7 +6,7 @@ local ensure_tokyonight = function()
 		vim.print("Tokyonight theme is not installed. Installing theme...")
 		fn.system({'git', 'clone', '--depth', '1', 'https://github.com/folke/tokyonight.nvim', install_path})
 		-- Only set if stored in `/pack` in any level at `/opt` level instead of `/start`
-		--vim.cmd [[packadd tokyonight.nvim]]
+		vim.cmd [[packadd tokyonight.nvim]]
 		return true
 	end
 --vim.print("Tokyonight theme already installed. Loading it...")
@@ -34,7 +34,7 @@ require("tokyonight").setup({
 		sidebars = "dark", -- style for sidebars, see below
 		floats = "dark", -- style for floating windows
 	},
-	sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
+	sidebars = { "terminal", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
 	day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
 	hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
 	dim_inactive = true, -- dims inactive windows
@@ -52,5 +52,5 @@ require("tokyonight").setup({
 	on_highlights = function(highlights, colors) end,
 })
 
--- setting colorscheme to `tokyonight-night`
-vim.cmd [[ colorscheme tokyonight-night ]]
+-- setting colorscheme to `tokyonight-storm`
+vim.cmd [[ colorscheme tokyonight-storm ]]
