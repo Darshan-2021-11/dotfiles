@@ -30,9 +30,9 @@ local function set_CP_cpp_keymaps()
 
   -- Use precompiled headers for faster compilation. Use the same flags and macros you use during the compilation of your projects.
   -- e.g. for the cp template I use in the snippets of the neovim, precompiled bits/stdc++.h and ext/pb_ds/assoc_container.hpp using the command
-  -- sudo g++ -std=c++20 -Wall -Wextra -Wshadow -O2 -D{definitions} {}
+  -- sudo g++ -std=c++17 -Wall -Wextra -Wshadow -Winvalid-pch -funroll-loops -finline-functions -O2 -D {}
   -- replacing {} with header name in their respective directories, use `-Winvalid-pch` to check warnings related to pre compiled headers
-  local compile = 'g++ -std=c++17 -Wall -Wextra -Wshadow -Winvalid-pch -O2 "' .. file .. '" -o "' .. executable .. '"'
+  local compile = 'g++ -std=c++17 -Wall -Wextra -Wshadow -Winvalid-pch -funroll-loops -finline-functions -O2 "' .. file .. '" -o "' .. executable .. '"'
   -- increasing stack size to 256mb with ulimit as soft limit
   -- for changing soft limit(-Ss), hard limit(-Hs), both(-s)
   local run = 'ulimit -Ss 262114 && "' .. executable .. '" < "' .. path .. '/inp"'
@@ -41,9 +41,9 @@ local function set_CP_cpp_keymaps()
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppT', ':%d | read ' .. config_path .. '/snippets/cppT<CR>kdd6jA', { noremap = true, silent = true, })
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppt', ':%d | read ' .. config_path .. '/snippets/cppt<CR>kdd6jA', { noremap = true, silent = true, })
   -- compile
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', '<ESC>:w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', '<ESC>:w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
   -- run compiled
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>r', '<ESC>:!' .. run .. ' > "' .. path .. '/out" 2>&1<CR>', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>r', '<ESC>:!' .. run .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
   -- compile inside shell
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<ESC>:w | belowright split term://bash<CR>i' .. compile .. '<CR>exit', { noremap = true, silent = true, })
   -- compile run shell
@@ -62,7 +62,7 @@ vim.api.nvim_create_user_command("CP", function()
   end
   -- Open input and output file to be used in keymaps
   local winnr = vim.api.nvim_get_current_win()
-  vim.fn.execute('belowright 50vsplit ' .. path .. '/out')
-  vim.fn.execute('leftabove split ' .. path .. '/inp')
+  vim.fn.execute('belowright 50vsplit ' .. path .. '/out' .. '| setlocal wrap')
+  vim.fn.execute('leftabove split ' .. path .. '/inp' .. '| setlocal wrap')
   vim.api.nvim_set_current_win(winnr)
 end, {})
