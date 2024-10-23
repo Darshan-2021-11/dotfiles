@@ -1,21 +1,22 @@
--- ensure that the tokyonight theme is installed
-local ensure_tokyonight = function()
+local ensure_theme = function(repo_name, repo_link)
 	local fn = vim.fn
-	local install_path = fn.stdpath('data') .. '/site/pack/colors/start/tokyonight.nvim'
+  local install_path = fn.stdpath('data') .. '/site/pack/colors/start/' .. repo_name
 	if fn.empty(fn.glob(install_path)) > 0 then
 		vim.print("Tokyonight theme is not installed. Installing theme...")
-		fn.system({'git', 'clone', '--depth', '1', 'https://github.com/folke/tokyonight.nvim', install_path})
+		fn.system({ 'git', 'clone', '--depth', '1', repo_link, install_path })
 		-- Only set if stored in `/pack` in any level at `/opt` level instead of `/start`
-		vim.cmd [[packadd tokyonight.nvim]]
+		vim.cmd [[packadd repo_name]]
 		return true
 	end
---vim.print("Tokyonight theme already installed. Loading it...")
+  --vim.print("Tokyonight theme already installed. Loading it...")
 	return false
 end
+-- ensure that the tokyonight theme is installed
+ensure_theme('tokyonight.nvim', 'https://github.com/folke/tokyonight.nvim')
+-- ensure that the horizon theme is installed
+ensure_theme('horizon.nvim', 'https://github.com/akinsho/horizon.nvim')
 
--- check if tokyonight is installed or not
-ensure_tokyonight()
-
+--[[
 require("tokyonight").setup({
 	-- your configuration comes here
 	-- or leave it empty to use the default settings
@@ -53,4 +54,9 @@ require("tokyonight").setup({
 })
 
 -- setting colorscheme to `tokyonight-storm`
-vim.cmd [[ colorscheme tokyonight-storm ]]
+-- vim.cmd [[ colorscheme tokyonight-storm ]]
+--]]
+
+require("horizon")
+vim.cmd [[ colorscheme horizon ]]
+vim.o.background = "dark"
