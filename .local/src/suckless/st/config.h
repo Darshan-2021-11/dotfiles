@@ -92,48 +92,87 @@ char *termname = "st-256color";
  *
  *	stty tabs
  */
-unsigned int tabspaces = 8;
+unsigned int tabspaces = 2;
+
+/* Terminal colors (16 first used in escape sequence) */
+//static const char *colorname[] = {
+//  /* 8 normal colors */
+//  "black",
+//  "red3",
+//  "green3",
+//  "yellow3",
+//  "blue2",
+//  "magenta3",
+//  "cyan3",
+//  "gray90",
+//
+//  /* 8 bright colors */
+//  "gray50",
+//  "red",
+//  "green",
+//  "yellow",
+//  "#5c5cff",
+//  "magenta",
+//  "cyan",
+//  "white",
+//
+//  [255] = 0,
+//
+//  /* more colors can be added after 255 to use with DefaultXX */
+//  "#cccccc",
+//  "#555555",
+//  "gray90", /* default foreground colour */
+//  "black", /* default background colour */
+//};
+//
+///*
+// * Default colors (colorname index)
+// * foreground, background, cursor, reverse cursor
+// */
+//unsigned int defaultfg = 15;
+//unsigned int defaultbg = 0;
+//unsigned int defaultcs = 15;
+//static unsigned int defaultrcs = 0;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-    /* 8 normal colors */
-    "#1d202f",
-    "#f7768e",
-    "#9ece6a",
-    "#e0af68",
-    "#7aa2f7",
-    "#bb9af7",
-    "#7dcfff",
-    "#a9b1d6",
+	/* 8 normal colors */
+	"#000000",  /* black */
+	"#ed6677",  /* red3 */
+	"#6ead47",  /* green3 */
+	"#c68c2e",  /* yellow3 */
+	"#5a9bec",  /* blue2 */
+	"#c36ee7",  /* magenta3 */
+	"#33acac",  /* cyan3 */
+	"#e7dcff",  /* gray90 */
 
-    /* 8 bright colors */
+	/* 8 bright colors */
+	"#444444",  /* gray50 */
+	"#f58993",  /* red */
+	"#7fc453",  /* green */
+	"#dfa13e",  /* yellow */
+	"#7cb1f5",  /* #5c5cff */
+	"#d18fef",  /* magenta */
+	"#3dc4c4",  /* cyan */
+	"#f3eeff",  /* white */
 
-    "#414868",
-    "#f7768e",
-    "#9ece6a",
-    "#e0af68",
-    "#7aa2f7",
-    "#bb9af7",
-    "#7dcfff",
-    "#c0caf5",
+	[255] = 0,
 
-    [255] = 0,
-
-    /* more colors can be added after 255 to use with DefaultXX */
-    "#c0caf5",
-    "#364a82",
-    "#c0caf5", /* default foreground colour */
-    "#24283b", /* default background colour */
+	/* more colors can be added after 255 to use with DefaultXX */
+	"#cccccc",  /* placeholder for additional colors */
+	"#555555",  /* placeholder for additional colors */
+	"#e7dcff",  /* default foreground colour */
+	"#0e0021",  /* default background colour */
 };
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 258;
-unsigned int defaultbg = 259;
-unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 257;
+unsigned int defaultfg = 15;  /* index of the default foreground color (white) */
+unsigned int defaultbg = 0;   /* index of the default background color (black) */
+unsigned int defaultcs = 15;  /* index of the default cursor color (white) */
+static unsigned int defaultrcs = 0;  /* index of the default reverse cursor color (black) */
 
 /*
  * Default shape of cursor
@@ -142,7 +181,7 @@ static unsigned int defaultrcs = 257;
  * 6: Bar ("|")
  * 7: Snowman ("☃")
  */
-static unsigned int cursorshape = 2;
+static unsigned int cursorshape = 4;
 
 /*
  * Default columns and rows numbers
@@ -155,7 +194,7 @@ static unsigned int rows = 24;
  * Default colour and shape of the mouse cursor
  */
 static unsigned int mouseshape = XC_xterm;
-static unsigned int mousefg = 7;
+static unsigned int mousefg = 15;
 static unsigned int mousebg = 0;
 
 /*

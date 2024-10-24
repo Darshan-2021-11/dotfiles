@@ -127,6 +127,9 @@ vim.api.nvim_create_autocmd("CompleteDone", {
 	end
 })
 
+-- disable change of cursor by nvim
+vim.o.guicursor = ""
+
 -- custom statusline
 --[[
 vim.cmd "highlight StatusType guibg=#b16286 guifg=#1d2021"
