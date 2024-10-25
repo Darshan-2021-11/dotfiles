@@ -1,0 +1,36 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# Maintainer: Gamer247<youremail@domain.com>
+pkgname=clangd
+pkgver=18.1.3
+pkgrel=1
+epoch=
+pkgdesc="Clangd is a C++ language server, providing IDE features to editors"
+arch=("x86_64")
+url=
+license=("Apache 2.0")
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=()
+noextract=()
+sha256sums=()
+validpgpkeys=()
+
+package() {
+  # Move the file to /src directory in the one containing this PKGBUILD
+  install -Dm755 "$srcdir/bin/clangd" "$pkgdir/usr/bin/clangd"
+  cp -r "$srcdir/lib/" "$pkgdir/usr/lib/"
+}
