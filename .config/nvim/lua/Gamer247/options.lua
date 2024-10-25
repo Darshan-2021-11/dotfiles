@@ -33,9 +33,9 @@ o.relativenumber = true
 vim.api.nvim_set_hl(0, 'LineNr', {
   bold = true,
   cterm = {},
-  ctermfg = 'DarkGrey',
+  ctermfg = 8, --put the color code of the 16-bit color, or put the color such as 'DarkGrey'
   ctermbg = 'NONE',
-  fg = 'DarkGrey',
+  fg = 'NONE',
   bg = 'NONE'
 })
 
