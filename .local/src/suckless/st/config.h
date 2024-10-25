@@ -181,7 +181,7 @@ static unsigned int defaultrcs = 0;  /* index of the default reverse cursor colo
  * 6: Bar ("|")
  * 7: Snowman ("☃")
  */
-static unsigned int cursorshape = 4;
+static unsigned int cursorshape = 2;
 
 /*
  * Default columns and rows numbers

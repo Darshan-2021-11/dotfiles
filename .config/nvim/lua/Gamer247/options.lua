@@ -15,7 +15,7 @@ g.netrw_browse_split = 4
 g.netrw_keepdir = 1
 
 -- setting color
-o.termguicolors = true
+o.termguicolors = false
 
 -- show cursor line and column
 o.cursorline = true
@@ -60,7 +60,7 @@ vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
 
 -- use special symbols for whitespaces
 o.list = true
-o.listchars:append({ eol = "¬", }) --space = "_"
+--o.listchars:append({ eol = "¬", }) --space = "_"
 
 -- add title
 o.title = true
@@ -126,9 +126,6 @@ vim.api.nvim_create_autocmd("CompleteDone", {
 		vim.cmd("pclose")
 	end
 })
-
--- disable change of cursor by nvim
-vim.o.guicursor = ""
 
 -- custom statusline
 --[[
