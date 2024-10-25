@@ -29,6 +29,15 @@ o.confirm = true
 -- show line numbers
 o.number = true
 o.relativenumber = true
+-- make the line number distinguishable from text when no termguicolors
+vim.api.nvim_set_hl(0, 'LineNr', {
+  bold = true,
+  cterm = {},
+  ctermfg = 'DarkGrey',
+  ctermbg = 'NONE',
+  fg = 'DarkGrey',
+  bg = 'NONE'
+})
 
 -- configuring indentation
 o.tabstop = 2
