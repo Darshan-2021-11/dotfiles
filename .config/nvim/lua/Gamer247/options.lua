@@ -15,6 +15,7 @@ g.netrw_browse_split = 4
 g.netrw_keepdir = 1
 
 -- setting color
+-- do not set this, we made color highlights according to 16-bit color
 o.termguicolors = false
 
 -- show cursor line and column
@@ -29,7 +30,7 @@ o.confirm = true
 -- show line numbers
 o.number = true
 o.relativenumber = true
--- make the line number distinguishable from text when no termguicolors
+-- make line number distinguishable from text when no termguicolors
 vim.api.nvim_set_hl(0, 'LineNr', {
   bold = true,
   cterm = {},
@@ -61,15 +62,30 @@ o.undofile = true
 o.wrap = false
 -- o.textwidth = 78
 
---[[ highlight column and setting its color(helpful for text wrapping)
-makes redrawing slower
-o.colorcolumn:append({ "119", })
-vim.cmd('highlight ColorColumn ctermbg=232 guibg=#1a2120')
-]]
+-- highlight column and setting its color(helpful for text wrapping)
+-- makes redrawing slower
+o.colorcolumn:append({ "78", })
+vim.api.nvim_set_hl(0, 'ColorColumn', {
+  bold = true,
+  cterm = {},
+  ctermfg = 'NONE', --put the color code of the 16-bit color, or put the color such as 'DarkGrey'
+  ctermbg = 8,
+  fg = 'NONE',
+  bg = 'NONE'
+})
 
 -- use special symbols for whitespaces
 o.list = true
---o.listchars:append({ eol = "¬", }) --space = "_"
+o.listchars:append({ eol = "¬",  }) --space = "_"
+-- make special symbols distinguishable from text when no termguicolors
+vim.api.nvim_set_hl(0, 'NonText', {
+  bold = true,
+  cterm = {},
+  ctermfg = 8, --put the color code of the 16-bit color, or put the color such as 'DarkGrey'
+  ctermbg = 'NONE',
+  fg = 'NONE',
+  bg = 'NONE'
+})
 
 -- add title
 o.title = true
@@ -123,7 +139,6 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 	<C-n>, <C-p> for auto completion from current file
 	<C-k> for spelling, set for current language used by `set spell`
 --]]
-		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
 		local key = vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true)
 		vim.api.nvim_feedkeys(key, "i", true)
 	end
