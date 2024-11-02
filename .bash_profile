@@ -10,9 +10,8 @@
 # Adding scripts to path
 export PATH=~/.local/src:$PATH
 
-# make neovim default editor and visual
-export EDITOR=nvim
-export VISUAL=nvim
+# Set man-pager to nvim
+export MANPAGER='nvim +Man!'
 
 # start xorg-server
 startx
