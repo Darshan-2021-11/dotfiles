@@ -4,7 +4,7 @@
 # then please put 'unknown'.
 
 # Maintainer: Gamer247<youremail@domain.com>
-pkgname=clangd
+pkgname=clangd-linux
 pkgver=18.1.3
 pkgrel=1
 epoch=
@@ -24,13 +24,16 @@ backup=()
 options=()
 install=
 changelog=
-source=()
+source=("$pkgname-$pkgver.zip")
 noextract=()
-sha256sums=()
+sha256sums=("775f6ac798d9c599258e3f4fa14d0af908b1801d38250e72a18fb907b28a1be6")
 validpgpkeys=()
 
+prepare() {
+  bsdtar -xf "$source"
+}
+
 package() {
-  # Move the file to /src directory in the one containing this PKGBUILD
-  install -Dm755 "$srcdir/bin/clangd" "$pkgdir/usr/bin/clangd"
-  cp -r "$srcdir/lib/" "$pkgdir/usr/lib/"
+  install -Dm755 "$srcdir/clangd_$pkgver/bin/clangd" "$pkgdir/usr/bin/clangd"
+  cp -r "$srcdir/clangd_$pkgver/lib/" "$pkgdir/usr/lib/"
 }

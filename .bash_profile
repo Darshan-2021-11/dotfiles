@@ -2,9 +2,6 @@
 # ~/.bash_profile
 #
 
-# show off comes first
-#fastfetch
-
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 # stop tmux from loading bash_profile
@@ -12,6 +9,10 @@
 
 # Adding scripts to path
 export PATH=~/.local/src:$PATH
+
+# make neovim default editor and visual
+export EDITOR=nvim
+export VISUAL=nvim
 
 # start xorg-server
 startx

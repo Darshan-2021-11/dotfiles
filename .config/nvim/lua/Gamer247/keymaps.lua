@@ -51,11 +51,6 @@ local function set_CP_cpp_keymaps()
 
 end
 
-
-local function ResizeVsplitPercentage(percent)
-    local total_width = vim.api.nvim_get_option("columns")
-    return math.floor(total_width * (percent / 100))
-end
 vim.api.nvim_create_user_command("CP", function()
   vim.api.nvim_create_autocmd({ "BufEnter", }, {
     group = vim.api.nvim_create_augroup('UserSnippets', { clear = false }),
@@ -67,7 +62,7 @@ vim.api.nvim_create_user_command("CP", function()
   end
   -- Open input and output file to be used in keymaps
   local winnr = vim.api.nvim_get_current_win()
-  vim.fn.execute('belowright ' .. ResizeVsplitPercentage(20) .. 'vsplit ' .. path .. '/out' .. '| setlocal wrap')
+  vim.fn.execute('belowright 50vsplit ' .. path .. '/out' .. '| setlocal wrap')
   vim.fn.execute('leftabove split ' .. path .. '/inp' .. '| setlocal wrap')
   vim.api.nvim_set_current_win(winnr)
 end, {})
