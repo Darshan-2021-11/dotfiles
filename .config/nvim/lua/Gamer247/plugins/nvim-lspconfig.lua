@@ -94,10 +94,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Setup language servers.
 
 -- ensure that your system has clangd installed via AUR package or package manager
-lspconfig.clangd.setup {}
+--lspconfig.clangd.setup {}
 
 -- ensure that your system has pylsp(python-lsp-server) installed via AUR package or package manager
 --lspconfig.pylsp.setup {}
 
 -- ensure that your system has tsserver(typescript-language-server) installed via AUR package or package manager
-lspconfig.tsserver.setup {}
+--lspconfig.tsserver.setup {}

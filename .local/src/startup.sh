@@ -27,7 +27,7 @@ daemon_setup() {
 }
 
 launch_apps() {
-	st -e tmux &
+	st &
 	firefox &
 }
 
