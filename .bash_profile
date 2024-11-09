@@ -2,16 +2,19 @@
 # ~/.bash_profile
 #
 
+# load bashrc file if present
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-# stop tmux from loading bash_profile
+# do not start xserver when tmux set
 [[ -n "$TMUX" ]] && return
-
-# Adding scripts to path
-export PATH=~/.local/src:$PATH
 
 # Set man-pager to nvim
 export MANPAGER='nvim +Man!'
+export EDITOR='nvim'
 
-# start xorg-server
+# Fixing errors with JAVA applications
+export AWT_TOOLKIT=MToolkit
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+# start x-server
 startx

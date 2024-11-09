@@ -1,20 +1,18 @@
--- ensure that nvim-lspconfig is installed
-local ensure_nvim_lspconfig = function()
+local ensure_plugin = function(repo_name, repo_link)
   local fn = vim.fn
-  local install_path = fn.stdpath('data') .. '/site/pack/plugins/start/nvim-lspconfig.nvim'
+  local install_path = fn.stdpath('data') .. '/site/pack/plugins/start/' .. repo_name
   if fn.empty(fn.glob(install_path)) > 0 then
-    vim.print("nvim-lspconfig is not installed. Installing it...")
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/neovim/nvim-lspconfig', install_path})
+    vim.print(repo_name .. ' plugin is not installed. Installing it...')
+    fn.system({ 'git', 'clone', '--depth', '1', repo_link, install_path })
     -- Only set if stored in `/pack` in any level at `/opt` level instead of `/start`
-    --vim.cmd [[packadd nvim-lspconfig.nvim]]
+    --vim.cmd [[ packadd repo_name ]]
     return true
   end
-  --vim.print("nvim-lspconfig already installed. Loading it...")
   return false
 end
 
--- check if nvim-lspconfig is installed or not
-ensure_nvim_lspconfig()
+-- check if nvim-lspconfig is installed
+ensure_plugin('nvim-lspconfig.nvim', 'https://github.com/neovim/nvim-lspconfig')
 
 local lspconfig = require('lspconfig')
 
@@ -71,7 +69,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Go to next/previous symbol (if supported by LSP)
     vim.keymap.set('n', ']s', vim.lsp.buf.document_symbol, opts)
     vim.keymap.set('n', '[s', function()
-      vim.lsp.buf.document_symbol({ direction = "previous" })
+      vim.lsp.buf.document_symbol({ direction = 'previous' })
     end, opts)
 
     -- Inlay hints (requires LSP support)
