@@ -9,15 +9,8 @@ vim.api.nvim_set_keymap('n', '<leader>tO', ':tabnew %:p:h/', { noremap = true, }
 vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<CR>', { noremap = true, }) -- this closes the tab but does not close buffers when used without close hidden buffer autocmd commented
 ]]
 
--- Automatically close brackets & parentheses
-vim.api.nvim_set_keymap('i', '(', '()<left>', { noremap = true, })
-vim.api.nvim_set_keymap('i', '[', '[]<left>', { noremap = true, })
-vim.api.nvim_set_keymap('i', '{', '{}<left>', { noremap = true, })
-vim.api.nvim_set_keymap('i', '{<CR>', '{<CR>}<ESC>O', { noremap = true, })
-
 --[[ TODO: Plugins keymaps
-Open netrw in a 20% split in tree view
-only for one tab
+Open netrw in a 20 width split in tree view
 ]]
 vim.api.nvim_set_keymap('n', '<leader>n', ':20Lex<CR>', { noremap = true, })
 
@@ -41,13 +34,13 @@ local function set_CP_cpp_keymaps()
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppT', ':%d | read ' .. config_path .. '/snippets/cppT<CR>kdd5jA', { noremap = true, silent = true, })
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cppt', ':%d | read ' .. config_path .. '/snippets/cppt<CR>kdd5jA', { noremap = true, silent = true, })
   -- compile
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', '<ESC>:w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', ':w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
   -- run compiled
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>r', '<ESC>:!' .. run .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>r', ':!' .. run .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
   -- compile inside shell
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<ESC>:w | belowright split term://bash<CR>i' .. compile .. '<CR>exit', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', ':w | belowright split term://bash<CR>i' .. compile .. '<CR>exit', { noremap = true, silent = true, })
   -- compile run shell
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sr', '<ESC>:belowright split term://bash<CR>i' .. run .. '<CR>exit', { noremap = true, silent = true, })
+  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sr', ':belowright split term://bash<CR>i' .. run .. '<CR>exit', { noremap = true, silent = true, })
 
 end
 
@@ -57,12 +50,10 @@ vim.api.nvim_create_user_command("CP", function()
     pattern = { "*.cpp", },
     callback = set_CP_cpp_keymaps
   })
-  if (vim.bo.filetype == 'cpp') then
-    set_CP_cpp_keymaps()
-  end
+	set_CP_cpp_keymaps()
   -- Open input and output file to be used in keymaps
   local winnr = vim.api.nvim_get_current_win()
-  vim.fn.execute('belowright 50vsplit ' .. path .. '/out' .. '| setlocal wrap')
-  vim.fn.execute('leftabove split ' .. path .. '/inp' .. '| setlocal wrap')
+  vim.fn.execute('belowright 20vsplit ' .. path .. '/out' .. '| setlocal wrap | set nobuflisted')
+  vim.fn.execute('leftabove split ' .. path .. '/inp' .. '| setlocal wrap | set nobuflisted')
   vim.api.nvim_set_current_win(winnr)
 end, {})

@@ -17,6 +17,20 @@ g.netrw_keepdir = 1
 -- setting color
 -- do not set this, we made color highlights according to 16-bit color
 o.termguicolors = false
+-- setting colorscheme options for notermguicolors
+vim.api.nvim_create_autocmd('ColorScheme', {
+	group = vim.api.nvim_create_augroup('UserColorScheme', { clear = false }),
+	callback = function()
+		-- line number color
+		vim.api.nvim_set_hl(0, 'LineNr', vim.tbl_extend('force', vim.api.nvim_get_hl(0, { name = 'LineNr', link = false }), { cterm = { italic = true }, ctermfg = 8 }))
+		-- highlight color column
+		vim.api.nvim_set_hl(0, 'ColorColumn', vim.tbl_extend('force', vim.api.nvim_get_hl(0, { name = 'ColorColumn', link = false }), { cterm = {}, ctermbg = 8 }))
+		-- whitespace color
+		vim.api.nvim_set_hl(0, 'Whitespace', vim.tbl_extend('force', vim.api.nvim_get_hl(0, { name = 'Whitespace', link = false }), { cterm = { italic = true }, ctermfg = 8, ctermbg = 'NONE' }))
+		-- italic comments
+		vim.api.nvim_set_hl(0, 'Comment', vim.tbl_extend('force', vim.api.nvim_get_hl(0, { name = 'Comment', link = false }), { cterm = { italic = true } }))
+	end,
+})
 
 -- show cursor line and column
 o.cursorline = true
@@ -33,15 +47,6 @@ o.confirm = true
 -- show line numbers
 o.number = true
 o.relativenumber = true
--- make line number distinguishable from text when no termguicolors
-vim.api.nvim_set_hl(0, 'LineNr', {
-  bold = true,
-  cterm = {},
-  ctermfg = 8, --put the color code of the 16-bit color, or put the color such as 'DarkGrey'
-  ctermbg = 'NONE',
-  fg = 'NONE',
-  bg = 'NONE'
-})
 
 -- configuring indentation
 o.tabstop = 2
@@ -65,30 +70,12 @@ o.undofile = true
 o.wrap = false
 -- o.textwidth = 78
 
--- highlight column and setting its color(helpful for text wrapping)
--- makes redrawing slower
+-- highlight column
 o.colorcolumn:append({ '78', })
-vim.api.nvim_set_hl(0, 'ColorColumn', {
-  bold = true,
-  cterm = {},
-  ctermfg = 'NONE', --put the color code of the 16-bit color, or put the color such as 'DarkGrey'
-  ctermbg = 8,
-  fg = 'NONE',
-  bg = 'NONE'
-})
 
 -- use special symbols for whitespaces
 o.list = true
-o.listchars:append({ eol = '¬',  }) --space = '_'
--- make special symbols distinguishable from text when no termguicolors
-vim.api.nvim_set_hl(0, 'NonText', {
-  bold = true,
-  cterm = {},
-  ctermfg = 8, --put the color code of the 16-bit color, or put the color such as 'DarkGrey'
-  ctermbg = 'NONE',
-  fg = 'NONE',
-  bg = 'NONE'
-})
+o.listchars:append({ trail = '-' })
 
 -- add title
 o.title = true
@@ -121,80 +108,29 @@ o.completeopt:append({ 'noselect', 'menuone', })
 
 -- autocompletion settings, for English
 o.complete:append({ 'k,' })
-
--- setting up omnifunc for language servers
-o.omnifunc = 'syntaxcomplete#Complete'
 -- show completion pop up even if only one option present
 o.shortmess:append('c')
+-- setting up omnifunc for language servers
+o.omnifunc = 'syntaxcomplete#Complete'
 
 -- setting the completion popup to show automatically
 vim.api.nvim_create_autocmd('InsertCharPre', {
-  group = vim.api.nvim_create_augroup('UserComplete', { clear = false }),
-  callback = function()
-    if vim.fn.pumvisible() == 1 then
-      return
-    end
-
-    --[[
-    use <C-x>
-    <C-o> for native code completion
-    <C-n>, <C-p> for auto completion from current file
-    <C-k> for spelling, set for current language used by `set spell`
-    --]]
-    local key = vim.api.nvim_replace_termcodes('<C-x><C-o>', true, true, true)
-    vim.api.nvim_feedkeys(key, 'i', true)
-  end
+	group = vim.api.nvim_create_augroup('UserComplete', { clear = false }),
+	callback = function()
+		if vim.fn.pumvisible() == 1 then
+			return
+		end
+		-- use <C-x>
+		-- <C-o> for native code completion
+		-- <C-k> for spelling, set for current language used by `set spell`
+		local key = vim.api.nvim_replace_termcodes('<C-x><C-o>', true, true, true)
+		vim.api.nvim_feedkeys(key, 'i', true)
+	end
 })
 -- remove the preview buffer after getting out of autocomplete
 vim.api.nvim_create_autocmd('CompleteDone', {
-  group = vim.api.nvim_create_augroup('UserComplete', { clear = false }),
-  callback = function()
-    vim.cmd('pclose')
-  end
+	group = vim.api.nvim_create_augroup('UserComplete', { clear = false }),
+	callback = function()
+		vim.cmd('pclose')
+	end
 })
-
--- custom statusline
---[[
-vim.cmd 'highlight StatusType guibg=#b16286 guifg=#1d2021'
-vim.cmd 'highlight StatusFile guibg=#fabd2f guifg=#1d2021'
-vim.cmd 'highlight StatusModified guibg=#1d2021 guifg=#d3869b'
-vim.cmd 'highlight StatusBuffer guibg=#98971a guifg=#1d2021'
-vim.cmd 'highlight StatusLocation guibg=#458588 guifg=#1d2021'
-vim.cmd 'highlight StatusPercent guibg=#1d2021 guifg=#ebdbb2'
-vim.cmd 'highlight StatusNorm guibg=none guifg=white'
-vim.o.statusline = ' '
-.. ''
-.. ' '
-.. '%l'
-.. ' '
-.. ' %#StatusType#'
-.. '<< '
-.. '%Y' 
-.. '  '
-.. ' >>'
-.. '%#StatusFile#'
-.. '<< '
-.. '%F'
-.. ' >>'
-.. '%#StatusModified#'
-.. ' '
-.. '%m'
-.. ' '
-.. '%#StatusNorm#'
-.. '%='
-.. '%#StatusBuffer#'
-.. '<< '
-.. '﬘ '
-.. '%n'
-.. ' >>'
-.. '%#StatusLocation#'
-.. '<< '
-.. '燐 '
-.. '%l,%c'
-.. ' >>'
-.. '%#StatusPercent#'
-.. '<< '
-.. '%p%%  '
-.. ' >> '
-]]
---vim.opt.statusline = '%<%t %m%r%h%w%q [%n]%=%-14.(%l,%c%V%) %P'

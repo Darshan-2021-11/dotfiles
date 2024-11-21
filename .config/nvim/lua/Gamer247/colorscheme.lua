@@ -11,4 +11,5 @@ local ensure_theme = function(repo_name, repo_link)
   return false
 end
 -- check if tokyonight theme is installed
---ensure_theme('tokyonight.nvim', 'https://github.com/folke/tokyonight.nvim')
+--ensure_theme('tokyonight.nvim', 'https://github.com/folke/tokyonight.nvim')'
+vim.cmd [[ colorscheme vim ]]
