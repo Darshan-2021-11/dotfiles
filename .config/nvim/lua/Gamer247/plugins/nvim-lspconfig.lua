@@ -12,7 +12,7 @@ local ensure_plugin = function(repo_name, repo_link)
 end
 
 -- check if nvim-lspconfig is installed
-ensure_plugin('nvim-lspconfig.nvim', 'https://github.com/neovim/nvim-lspconfig')
+ensure_plugin('nvim-lspconfig', 'https://github.com/neovim/nvim-lspconfig')
 
 local lspconfig = require('lspconfig')
 
