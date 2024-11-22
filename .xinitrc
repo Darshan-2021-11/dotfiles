@@ -11,7 +11,8 @@ check_and_run() {
 }
 
 #Start autostart before dwm
-check_and_run xautolock -time 5 -locker "systemctl suspend" -corners ---- -cornersize 10
+check_and_run xautolock -time 1 -locker "systemctl suspend" -corners ---- -cornersize 10
+check_and_run redshift -PO3000
 check_and_run dunst
 check_and_run slstatus
 check_and_run st

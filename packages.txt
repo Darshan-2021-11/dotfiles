@@ -28,6 +28,7 @@ ntfs-3g
 os-prober
 pkgconf
 polkit
+redshift
 scrot
 stow
 sudo

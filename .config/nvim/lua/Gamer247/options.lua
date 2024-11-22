@@ -71,7 +71,7 @@ o.wrap = false
 -- o.textwidth = 78
 
 -- highlight column
-o.colorcolumn:append({ '78', })
+--o.colorcolumn:append({ '78', })
 
 -- use special symbols for whitespaces
 o.list = true
