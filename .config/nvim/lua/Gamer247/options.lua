@@ -33,7 +33,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 -- show cursor line and column
-o.cursorline = true
+o.cursorline = false
 --o.cursorcolumn = true
 -- disable custom cursor of nvim
 o.guicursor = ''
