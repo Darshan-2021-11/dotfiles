@@ -19,30 +19,52 @@ g.netrw_keepdir = 1
 o.termguicolors = false
 -- setting colorscheme options for notermguicolors
 vim.api.nvim_create_autocmd('ColorScheme', {
-	group = vim.api.nvim_create_augroup('UserColorScheme', { clear = false }),
+	group = vim.api.nvim_create_augroup('UserColorScheme', { clear = false, }),
 	callback = function()
-		-- line number color
-		vim.api.nvim_set_hl(0, 'LineNr', vim.tbl_extend('force', vim.api.nvim_get_hl(0, { name = 'LineNr', link = false }), { cterm = { italic = true }, ctermfg = 8 }))
-		-- highlight color column
-		vim.api.nvim_set_hl(0, 'ColorColumn', vim.tbl_extend('force', vim.api.nvim_get_hl(0, { name = 'ColorColumn', link = false }), { cterm = {}, ctermbg = 8 }))
+		local function replace_hl_property(hl_group, props)
+			vim.api.nvim_set_hl(
+				0,
+				hl_group,
+				vim.tbl_extend('force',
+					vim.api.nvim_get_hl(
+						0,
+						{ name = hl_group, link = false, }),
+						props
+				)
+			)
+		end
+		-- italic and color line number
+		replace_hl_property('LineNr', { cterm = { italic = true, }, ctermfg = 8, })
 		-- whitespace color
-		vim.api.nvim_set_hl(0, 'Whitespace', vim.tbl_extend('force', vim.api.nvim_get_hl(0, { name = 'Whitespace', link = false }), { cterm = { italic = true }, ctermfg = 8, ctermbg = 'NONE' }))
+		replace_hl_property('Whitespace', { cterm = { italic = true, }, ctermfg = 8, ctermbg = 'NONE', })
 		-- italic comments
-		vim.api.nvim_set_hl(0, 'Comment', vim.tbl_extend('force', vim.api.nvim_get_hl(0, { name = 'Comment', link = false }), { cterm = { italic = true } }))
+		replace_hl_property('Comment', { cterm = { italic = true, }, })
+		-- bold keywords for programming lanuguage
+		for _, hl_group in ipairs({
+			"Statement",
+			"Type",
+			--"Identifier",
+			--"Constant",
+			--"PreProc",
+		}) do
+		replace_hl_property(hl_group, { cterm = { bold = true, }, })
+		end
 	end,
 })
 
 -- show cursor line and column
 o.cursorline = false
---o.cursorcolumn = true
--- disable custom cursor of nvim
+--[[ custom cursor of nvim
+o.cursorcolumn = true
+--]]
 o.guicursor = ''
 
 -- ask for confirmation instead of throwing error
 o.confirm = true
 
--- change directory to current file
---o.autochdir = true
+--[[ change directory to current file
+o.autochdir = true
+--]]
 
 -- show line numbers
 o.number = true
@@ -60,8 +82,9 @@ o.copyindent = true
 -- use system clipboard as default register
 o.clipboard:append('unnamedplus')
 
--- no swapfile for confidential files
---o.swapfile = false
+--[[ no swapfile for confidential files
+o.swapfile = false
+--]]
 
 -- undo file even after exit
 o.undofile = true
@@ -70,12 +93,9 @@ o.undofile = true
 o.wrap = false
 -- o.textwidth = 78
 
--- highlight column
---o.colorcolumn:append({ '78', })
-
 -- use special symbols for whitespaces
 o.list = true
-o.listchars:append({ trail = '-' })
+o.listchars:append({ trail = '-', })
 
 -- add title
 o.title = true
@@ -91,46 +111,38 @@ o.splitright = true
 ]]
 
 --[[ tabline
-0: never
-1: only if there are at least two tab pages (default)
-2: always
+	0: never
+	1: only if there are at least two tab pages (default)
+	2: always
+o.showtabline = 2
 ]]
---o.showtabline = 2
 
 -- fast macros
 o.lazyredraw = true
 
--- setting spellcheck
---o.spell = true
+--[[ setting spellcheck and autocomplete for English
+o.spell = true
+o.complete:append({ 'k', })
+--]]
 
 -- completion settings
 o.completeopt:append({ 'noselect', 'menuone', })
 
--- autocompletion settings, for English
-o.complete:append({ 'k,' })
 -- show completion pop up even if only one option present
 o.shortmess:append('c')
 -- setting up omnifunc for language servers
-o.omnifunc = 'syntaxcomplete#Complete'
+--o.omnifunc = 'syntaxcomplete#Complete'
 
 -- setting the completion popup to show automatically
+-- see `:h compl-autocomplete`
 vim.api.nvim_create_autocmd('InsertCharPre', {
-	group = vim.api.nvim_create_augroup('UserComplete', { clear = false }),
+	group = vim.api.nvim_create_augroup('UserComplete', { clear = false, }),
+	buffer = vim.api.nvim_get_current_buf(),
 	callback = function()
-		if vim.fn.pumvisible() == 1 then
+		if vim.fn.pumvisible() == 1 or vim.fn.state('m') == 'm' then
 			return
 		end
-		-- use <C-x>
-		-- <C-o> for native code completion
-		-- <C-k> for spelling, set for current language used by `set spell`
-		local key = vim.api.nvim_replace_termcodes('<C-x><C-o>', true, true, true)
-		vim.api.nvim_feedkeys(key, 'i', true)
-	end
-})
--- remove the preview buffer after getting out of autocomplete
-vim.api.nvim_create_autocmd('CompleteDone', {
-	group = vim.api.nvim_create_augroup('UserComplete', { clear = false }),
-	callback = function()
-		vim.cmd('pclose')
-	end
+		local key = vim.keycode('<C-x><C-n>')
+		vim.api.nvim_feedkeys(key, 'm', false)
+	end,
 })
