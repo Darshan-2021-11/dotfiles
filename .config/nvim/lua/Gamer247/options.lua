@@ -1,22 +1,71 @@
-local o = vim.opt
-local g = vim.g
-g.mapleader = ' '
+vim.g.mapleader = ' '
 
 -- NETRW
 -- remove annoying banner
---g.netrw_banner = 0
+vim.g.netrw_banner = 0
 -- liststyle tree
-g.netrw_liststyle = 3
+vim.g.netrw_liststyle = 2
 -- open file in current window open
-g.netrw_browse_split = 4
--- open file in a tab
---g.netrw_browse_split = 3
+vim.g.netrw_browse_split = 4
 -- use same instance in all tabs
-g.netrw_keepdir = 1
+vim.g.netrw_keepdir = 1
+
+-- ask for confirmation instead of throwing error
+vim.opt.confirm = true
+
+-- show line numbers
+vim.opt.number = true
+vim.opt.relativenumber = true
+
+-- configuring indentation
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+
+-- match indentation while copying
+vim.opt.copyindent = true
+
+-- undo file even after exit
+vim.opt.undofile = true
+
+-- text wrapping
+vim.opt.wrap = false
+
+-- use special symbols for whitespaces
+vim.opt.list = true
+vim.opt.listchars:append({ trail = '-', })
+
+-- add title
+vim.opt.title = true
+
+-- searching text
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.hlsearch = true
+
+-- fast macros
+vim.opt.lazyredraw = true
+
+-- completion settings
+vim.opt.completeopt:append({ 'noselect', 'menuone', })
+-- show completion pop up even if only one option present
+vim.opt.shortmess:append('c')
+
+-- setting the completion popup to show automatically, see `:h compl-autocomplete`
+vim.api.nvim_create_autocmd('InsertCharPre', {
+	group = vim.api.nvim_create_augroup('UserComplete', { clear = false, }),
+	buffer = vim.api.nvim_get_current_buf(),
+	callback = function()
+		if vim.fn.pumvisible() == 1 or vim.fn.state('m') == 'm' then
+			return
+		end
+		local key = vim.keycode('<C-x><C-n>')
+		vim.api.nvim_feedkeys(key, 'm', false)
+	end,
+})
 
 -- setting color
--- do not set this, we made color highlights according to 16-bit color
-o.termguicolors = false
+vim.opt.termguicolors = false
 -- setting colorscheme options for notermguicolors
 vim.api.nvim_create_autocmd('ColorScheme', {
 	group = vim.api.nvim_create_augroup('UserColorScheme', { clear = false, }),
@@ -52,97 +101,24 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 	end,
 })
 
--- show cursor line and column
-o.cursorline = false
---[[ custom cursor of nvim
-o.cursorcolumn = true
---]]
-o.guicursor = ''
-
--- ask for confirmation instead of throwing error
-o.confirm = true
-
+--[[ show cursor line and column
+vim.opt.cursorline = false
+vim.opt.cursorcolumn = true
+]]
 --[[ change directory to current file
-o.autochdir = true
---]]
-
--- show line numbers
-o.number = true
-o.relativenumber = true
-
--- configuring indentation
-o.tabstop = 2
-o.expandtab = false
-o.shiftwidth = 2
-o.softtabstop = 2
-
--- match indentation while copying/yanking
-o.copyindent = true
-
--- use system clipboard as default register
-o.clipboard:append('unnamedplus')
-
+vim.opt.autochdir = true
+]]
+--[[ use system clipboard as default register
+vim.opt.clipboard:append('unnamedplus')
+]]
 --[[ no swapfile for confidential files
-o.swapfile = false
---]]
-
--- undo file even after exit
-o.undofile = true
-
--- text wrapping
-o.wrap = false
--- o.textwidth = 78
-
--- use special symbols for whitespaces
-o.list = true
-o.listchars:append({ trail = '-', })
-
--- add title
-o.title = true
-
--- searching text
-o.ignorecase = true
-o.smartcase = true
-o.hlsearch = true
-
+vim.opt.swapfile = false
+]]
 --[[ window spliting
-o.splitbelow = true
-o.splitright = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 ]]
-
---[[ tabline
-	0: never
-	1: only if there are at least two tab pages (default)
-	2: always
-o.showtabline = 2
-]]
-
--- fast macros
-o.lazyredraw = true
-
 --[[ setting spellcheck and autocomplete for English
-o.spell = true
-o.complete:append({ 'k', })
---]]
-
--- completion settings
-o.completeopt:append({ 'noselect', 'menuone', })
-
--- show completion pop up even if only one option present
-o.shortmess:append('c')
--- setting up omnifunc for language servers
---o.omnifunc = 'syntaxcomplete#Complete'
-
--- setting the completion popup to show automatically
--- see `:h compl-autocomplete`
-vim.api.nvim_create_autocmd('InsertCharPre', {
-	group = vim.api.nvim_create_augroup('UserComplete', { clear = false, }),
-	buffer = vim.api.nvim_get_current_buf(),
-	callback = function()
-		if vim.fn.pumvisible() == 1 or vim.fn.state('m') == 'm' then
-			return
-		end
-		local key = vim.keycode('<C-x><C-n>')
-		vim.api.nvim_feedkeys(key, 'm', false)
-	end,
-})
+vim.opt.spell = true
+vim.opt.complete:append({ 'k', })
+]]
