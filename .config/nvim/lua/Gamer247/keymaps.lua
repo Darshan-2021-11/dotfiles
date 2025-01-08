@@ -42,8 +42,12 @@ vim.api.nvim_create_user_command('CP', function()
 	set_CP_cpp_keymaps(path)
 	-- Open input and output file to be used in keymaps
 	local winnr = vim.api.nvim_get_current_win()
-	vim.fn.execute('belowright 20vsplit ' .. path .. '/out' .. '| setlocal wrap | set nobuflisted')
-	vim.fn.execute('leftabove split ' .. path .. '/inp' .. '| setlocal wrap | set nobuflisted')
+	vim.fn.execute('belowright vsplit +setlocal\\ noswapfile\\ nobuflisted\\ wrap\\ |\\ vertical\\ resize\\ 40% ' .. path .. '/out')
+	vim.fn.execute('leftabove split +setlocal\\ noswapfile\\ nobuflisted\\ wrap ' .. path .. '/inp')
+--[[
+	vim.fn.execute('belowright vsplit ' .. path .. '/out' .. '| setlocal wrap nobuflisted noswapfile | vertical resize 40%')
+	vim.fn.execute('leftabove split ' .. path .. '/inp' .. '| setlocal wrap nobuflisted noswapfile')
+]]
 	vim.api.nvim_set_current_win(winnr)
 
 	vim.api.nvim_create_autocmd({ 'BufEnter', }, {
