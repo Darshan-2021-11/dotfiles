@@ -37,8 +37,9 @@ end
 
 vim.api.nvim_create_user_command('CP', function()
 	--path storing `inp` and `out` files
-	path = '/tmp';
+	local path = '/tmp';
 
+	vim.fn.execute('only')
 	set_CP_cpp_keymaps(path)
 	-- Open input and output file to be used in keymaps
 	local winnr = vim.api.nvim_get_current_win()
