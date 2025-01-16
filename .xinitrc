@@ -21,3 +21,6 @@ firefox &
 export AWT_TOOLKIT=MToolkit
 export _JAVA_AWT_WM_NONREPARENTING=1
 exec dwm
+
+##decrease response time of keyboard in Xserver for faster nvim
+xset r rate 200 40
