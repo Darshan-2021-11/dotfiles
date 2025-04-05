@@ -43,6 +43,9 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
 
+-- change directory to current file
+vim.opt.autochdir = true
+
 -- fast macros
 vim.opt.lazyredraw = true
 
@@ -104,9 +107,6 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 --[[ show cursor line and column
 vim.opt.cursorline = false
 vim.opt.cursorcolumn = true
-]]
---[[ change directory to current file
-vim.opt.autochdir = true
 ]]
 --[[ use system clipboard as default register
 vim.opt.clipboard:append('unnamedplus')

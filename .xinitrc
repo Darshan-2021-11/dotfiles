@@ -14,6 +14,8 @@ check_process slstatus
 check_process redshift -PO3000
 ## applications
 st &
+##decrease response time of keyboard in Xserver for faster nvim
+xset r rate 300 40
 firefox &
 
 # Run WM
@@ -21,6 +23,3 @@ firefox &
 export AWT_TOOLKIT=MToolkit
 export _JAVA_AWT_WM_NONREPARENTING=1
 exec dwm
-
-##decrease response time of keyboard in Xserver for faster nvim
-xset r rate 200 40
