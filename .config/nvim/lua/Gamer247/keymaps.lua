@@ -1,10 +1,32 @@
-vim.api.nvim_set_keymap('n', '<leader>o', ':e ', { noremap = true, }) -- open a file relative to the current path
-vim.api.nvim_set_keymap('n', '<leader>O', ':e %:h/', { noremap = true, }) -- open a file relative to the current file
-vim.api.nvim_set_keymap('n', '<leader>bd', ':bdelete<CR>', { noremap = true, }) -- delete the current buffer from memory
 --[[ TODO: Plugins keymaps
 Open netrw in a 20 width split in tree view
 ]]
 vim.api.nvim_set_keymap('n', '<leader>n', ':20Lex<CR>', { noremap = true, })
+
+-- Change directory via terminal
+vim.api.nvim_create_autocmd({ 'TermRequest' }, {
+	desc = 'Handles OSC 7 dir change requests',
+	callback = function(ev)
+		if string.sub(ev.data.sequence, 1, 4) == '\x1b]7;' then
+			local dir = string.gsub(ev.data.sequence, '\x1b]7;file://[^/]*', '')
+			if vim.fn.isdirectory(dir) == 0 then
+				vim.notify('invalid dir: '..dir)
+				return
+			end
+			vim.api.nvim_buf_set_var(ev.buf, 'osc7_dir', dir)
+			if vim.o.autochdir and vim.api.nvim_get_current_buf() == ev.buf then
+				vim.cmd.cd(dir)
+			end
+		end
+	end
+})
+vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter', 'DirChanged' }, {
+	callback = function(ev)
+		if vim.b.osc7_dir and vim.fn.isdirectory(vim.b.osc7_dir) == 1 then
+			vim.cmd.cd(vim.b.osc7_dir)
+		end
+	end
+})
 
 -- SNIPPETS
 local function set_CP_cpp_keymaps(path)
@@ -45,10 +67,10 @@ vim.api.nvim_create_user_command('CP', function()
 	local winnr = vim.api.nvim_get_current_win()
 	vim.fn.execute('belowright vsplit +setlocal\\ noswapfile\\ nobuflisted\\ wrap\\ |\\ vertical\\ resize\\ 40% ' .. path .. '/out')
 	vim.fn.execute('leftabove split +setlocal\\ noswapfile\\ nobuflisted\\ wrap ' .. path .. '/inp')
---[[
+	--[[
 	vim.fn.execute('belowright vsplit ' .. path .. '/out' .. '| setlocal wrap nobuflisted noswapfile | vertical resize 40%')
 	vim.fn.execute('leftabove split ' .. path .. '/inp' .. '| setlocal wrap nobuflisted noswapfile')
-]]
+	]]
 	vim.api.nvim_set_current_win(winnr)
 
 	vim.api.nvim_create_autocmd({ 'BufEnter', }, {
@@ -66,4 +88,7 @@ vim.api.nvim_set_keymap('n', '<leader>bp', ':bprevious<CR>', { noremap = true, }
 vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew ', { noremap = true, }) -- opens a file relative to current path
 vim.api.nvim_set_keymap('n', '<leader>tO', ':tabnew %:h/', { noremap = true, }) -- opens a file relative to current file
 vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<CR>', { noremap = true, }) -- this closes the tab but not included buffers
+vim.api.nvim_set_keymap('n', '<leader>o', ':e ', { noremap = true, }) -- open a file relative to the current path
+vim.api.nvim_set_keymap('n', '<leader>O', ':e %:h/', { noremap = true, }) -- open a file relative to the current file
+vim.api.nvim_set_keymap('n', '<leader>bw', ':bwipe<CR>', { noremap = true, }) -- delete the current buffer from memory
 ]]
