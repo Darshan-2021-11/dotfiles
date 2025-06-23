@@ -1,0 +1,33 @@
+template <typename T, uint32_t SZ>
+struct mp {
+  T data[SZ];
+  uint32_t freq[SZ];
+	uint32_t n;
+
+	mp() = default;
+	uint32_t size() const noexcept {
+		return n;
+	}
+	void make() noexcept {
+		int _n;
+		freq[_n = 0] = 1;
+		for (uint32_t i = 1; i < n; ++i)
+			if (data[i] == data[i - 1]) ++freq[_n];
+			else data[++_n] = data[i], freq[_n] = 1;
+		n = _n + 1;
+	}
+	void copy(T *arr, const uint32_t sz) noexcept {
+		for (uint32_t i = 0; i < sz; ++i) data[i] = arr[i];
+		n = sz;
+		sort(data, data + n, less<T>());
+	}
+	uint32_t get(const T v) const noexcept {
+		uint32_t idx = lower_bound(data, data + _n, v) - data;
+		if (idx == _n || data[idx] != v) return 0;
+		return freq[idx];
+	}
+	uint32_t operator[](const T v) const noexcept {
+		return get(v);
+	}
+};
+

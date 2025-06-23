@@ -1,0 +1,27 @@
+template <uint32_t SZ>
+struct bs {
+	const static uint32_t IDX_RS = 5;
+	const static uint32_t MASK = (sizeof(uint32_t) << 3) - 1;
+	uint32_t data[(SZ + MASK) >> IDX_RS], n;
+	bs() noexcept = default;
+	void init(uint32_t size) {
+		fill_n(data, (size + MASK) >> IDX_RS, 0);
+		n = size;
+	}
+	void set(uint32_t idx) {
+		data[idx >> IDX_RS] |= (1U << (idx & MASK));
+	}
+	void reset(uint32_t idx) {
+		data[idx >> IDX_RS] &= ~(1U << (idx & MASK));
+	}
+	void flip(uint32_t idx) {
+		data[idx >> IDX_RS] ^= (1U << (idx & MASK));
+	}
+	void assign(uint32_t idx, bool val) {
+		val ? set(idx) : reset(idx);
+	}
+	uint32_t get(uint32_t idx) {
+		if (idx >= n) return 0U;
+		return (data[idx >> IDX_RS] >> (idx & MASK)) & 1U;
+	}
+};

@@ -1,0 +1,29 @@
+template <int32_t SZ>
+struct suffix_array {
+  int32_t p[SZ + 1], c[SZ + 1], lcp[SZ + 1], _n; char data[SZ + 1];
+  suffix_array() noexcept : _n(0) {}
+  suffix_array(const char *source, int32_t size) noexcept : _n(size) { copy(source, source + size, data); make(); }
+  void input(int32_t n) noexcept { int32_t t; for (_n = 0; _n < n; ++_n) cin >> t, data[_n] = t; make(); }
+  void make() noexcept { int32_t cn[SZ + 1], pn[SZ + 1]; array<int32_t, 2> pre, cur; data[_n++] = '\0';
+    assert(SZ >= (1 << 8));
+    {
+      fill_n(lcp, (1 << 8), 0); for (int32_t i = 0; i < _n; ++i) ++lcp[c[i] = data[i] - '\0']; for (int32_t i = 0; i < (1 << 8); ++i) pn[i] = lcp[i] != 0;
+      partial_sum(lcp, lcp + (1 << 8), lcp); for (int32_t i = 0; i < _n; ++i) p[--lcp[c[i]]] = i;
+      pn[0] = 0; partial_sum(pn, pn + (1 << 8), pn); for (int32_t i = 0; i < _n; ++i) c[i] = pn[c[i]];
+    }
+    for (int32_t k = 0; (1 << k) < _n; ++k, copy(cn, cn + _n, c)) {
+      for (int32_t i = 0; i < _n; ++i) { pn[i] = p[i] - (1 << k); if (pn[i] < 0) pn[i] += _n; }
+      fill_n(lcp, _n, 0); for (int32_t i = 0; i < _n; ++i) ++lcp[c[i]]; partial_sum(lcp, lcp + _n, lcp); for (int32_t i = _n - 1; ~i; --i) p[--lcp[c[pn[i]]]] = pn[i];
+      cn[p[0]] = 0; int32_t x = p[0] + (1 << k); if (x >= _n) x -= _n; pre = { c[p[0]], c[x] };
+      for (int32_t i = 1; i < _n; ++i, pre = cur) {
+        x = p[i] + (1 << k); if (x >= _n) x -= _n; cur = { c[p[i]], c[x] };
+        if (cur == pre) cn[p[i]] = cn[p[i - 1]]; else cn[p[i]] = cn[p[i - 1]] + 1;
+      }
+    }
+    for (int32_t i = 0, k = 0, x = c[i], y = p[x - 1]; i < _n - 1; lcp[x - 1] = k, ++i, k = max(k - 1, 0), x = c[i], y = p[x - 1]) while (data[i + k] == data[y + k]) ++k;
+    lcp[_n - 1] = 0;
+  }
+  template <bool ub> int32_t bs(const char *other, int32_t other_size) const noexcept { int32_t hi = _n, lo = 1, x; next: while (lo < hi) { x = (lo + hi) >> 1; for (int32_t i = 0; i < other_size; ++i) { if (data[p[x] + i] == other[i]) continue; if (data[p[x] + i] < other[i]) lo = x + 1; else hi = x; goto next; } if constexpr (ub) lo = x + 1; else hi = x; } return lo; }
+  int32_t count(const char *other, int32_t other_size) const noexcept { return bs<1>(other, other_size) - bs<0>(other, other_size); }
+  int32_t size() const { return _n; }
+};

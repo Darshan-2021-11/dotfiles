@@ -1,0 +1,139 @@
+template <typename T, uint32_t SZ>
+struct dynamic_lazy_seg_tree {
+	struct Node {
+		static constexpr T lz_d = INT_MAX;
+		T mx, sum, lz;
+		uint32_t p[2];
+		void init() noexcept { mx = sum = 0, lz = lz_d, p[0] = p[1] = UINT32_MAX; }
+		void upd1(const T tlz) noexcept { mx = max(T{}, tlz), sum = lz = tlz; }
+	};
+	template <typename U>
+		struct stk {
+			U s[sizeof(T) > 4 ? 64 : 32];
+			uint32_t sn;
+			stk() noexcept { init(); }
+			void init() noexcept { sn = 0; }
+			U back() noexcept { return s[sn - 1]; }
+			U pop_back() noexcept { return s[--sn]; }
+			void push_back(U v) noexcept { s[sn++] = v; }
+			uint32_t size() const noexcept { return sn; }
+		};
+	Node data[SZ];
+	T n;
+	uint32_t _h, _n;
+ 
+	void init(const T size) noexcept {
+		data[0].init();
+		n = size, _h = sizeof(T) > 4 ? 63 - __builtin_clzll(n) : 31 - __builtin_clz(n), _n = 1;
+	}
+	dynamic_lazy_seg_tree(const uint32_t size) noexcept {
+		init(size);
+	}
+	int get() noexcept {
+		assert(_n < SZ);
+		data[_n].init();
+		return _n++; 
+	}
+	void merge(const uint32_t idx) noexcept {
+		auto &c = data[idx];
+		if (c.lz != Node::lz_d) return;
+		if (c.p[0] == UINT32_MAX) {
+			const auto &r = data[c.p[1]];
+			c.mx = r.mx, c.sum = r.sum;
+		}
+		else if (c.p[1] == UINT32_MAX) {
+			const auto &l = data[c.p[0]];
+			c.mx = l.mx, c.sum = l.sum;
+		}
+		else {
+			const auto &l = data[c.p[0]], &r = data[c.p[1]];
+			c.mx = max(l.mx, l.sum + r.mx);
+			c.sum = l.sum + r.sum;
+		}
+	}
+	/* Note: G == 0 for left index, and G == 1 for right index */
+	template <uint32_t G> void apply(const uint32_t d_idx, const bool bit, const bool mk) noexcept {
+		auto &c = data[d_idx];
+		if (mk) {
+			if (c.p[G] == UINT32_MAX) c.p[G] = get();
+			data[c.p[G]].upd1(c.lz >> 1);
+			if (c.p[1 - G] == UINT32_MAX) c.p[1 - G] = get();
+			data[c.p[1 - G]].upd1(c.lz >> 1);
+			c.lz = Node::lz_d;
+		} else {
+			if (G == bit) {
+				if (c.p[G] == UINT32_MAX) c.p[G] = get();
+			}
+			if (c.p[1 - G] == UINT32_MAX) c.p[1 - G] = get();
+		}
+	}
+	/* Returns parent nodes for apply */
+	template <int G> stk<uint32_t> push(const T idx) noexcept {
+		T _idx;
+		stk<uint32_t> s; uint32_t t = _h, d_idx = 0, bit;
+		s.push_back(d_idx);
+		do {
+			_idx = idx >> t;
+			if (!_idx) continue;
+			bit = _idx & 1;
+			apply<G>(d_idx, bit, data[d_idx].lz != Node::lz_d);
+			s.push_back(d_idx);
+			d_idx = data[d_idx].p[bit];
+		} while (t--);
+		return s;
+	}
+	/* Returns required child nodes for update/query */
+	template <int G> uint32_t get(const uint32_t idx) const noexcept {
+		if constexpr (G) return data[idx].p[0];
+		return data[idx].p[1];
+	}
+	void op1(T l, T r, T v) noexcept {
+		l += n, r += n;
+		uint32_t li, ri, ln, rn;
+		stk<uint32_t> ls = push<0>(l), rs = push<1>(r - 1);
+		ln = ls.sn, rn = rs.sn;
+		while (l < r) {
+			li = ls.pop_back(), ri = rs.pop_back();
+			if (l & 1) data[get<0>(li)].upd1(v), ++l;
+			if (r & 1) --r, data[get<1>(ri)].upd1(v);
+			l >>= 1, r >>= 1, v <<= 1;
+		}
+		ls.sn = ln, rs.sn = rn;
+		while (ls.size() > 1) li = ls.pop_back(), merge(li);
+		while (rs.size() > 1) ri = rs.pop_back(), merge(ri);
+	}
+	T query(T h) noexcept {
+		T l = n, r = n << 1, tv;
+		uint32_t li, ri, tidx = UINT32_MAX;
+		stk<uint32_t> ls = push<0>(l), rs = push<1>(r - 1), ridx;
+		stk<T> rv;
+		while (l < r) {
+			li = ls.pop_back(), ri = rs.pop_back();
+			if (l & 1) {
+				li = get<0>(li);
+				if (h >= data[li].mx) h -= data[li].sum;
+				else { tidx = li, tv = l; break; }
+				++l;
+			}
+			if (r & 1) --r, ridx.push_back(get<1>(ri)), rv.push_back(r);
+			l >>= 1, r >>= 1;
+		}
+		if (tidx == UINT32_MAX)
+			while (ridx.size()) {
+				ri = ridx.pop_back(), r = rv.pop_back();
+				if (h >= data[ri].mx) h -= data[ri].sum;
+				else { tidx = ri, tv = r; break; }
+			};
+		if (tidx == UINT32_MAX) return n;
+		while (tv < n) {
+			tv <<= 1;
+			auto &c = data[tidx];
+			apply<0>(tidx, 0, c.lz != Node::lz_d);
+			if (h >= data[c.p[0]].mx) h -= data[c.p[0]].sum, tidx = c.p[1], ++tv;
+			else tidx = c.p[0];
+		}
+		return tv - n;
+	}
+	~dynamic_lazy_seg_tree() {}
+};
+

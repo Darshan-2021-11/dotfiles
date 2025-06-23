@@ -4,16 +4,16 @@ template<typename T, uint32_t SZ, typename Comparator = std::less<T>> struct pq 
 	uint32_t n = 0;
 
 	pq() = default;
-	void init(const T *arr, uint32_t len) {
+	void init(const T *arr, uint32_t len) noexcept {
 		assert(len <= SZ);
 		for (uint32_t i = 0; i < len; ++i)
 			h[i] = arr[i];
 		n = len;
 		heapify();
 	}
-	uint32_t size() const { return n; }
-	const T& top() const { assert(n); return h[0]; }
-	void push(T v) {
+	uint32_t size() const noexcept { return n; }
+	const T& top() const noexcept { assert(n); return h[0]; }
+	void push(T v) noexcept {
 		uint32_t i = n++, p;
 		while(i) {
 			p = (i - 1) >> 1;
@@ -30,20 +30,21 @@ template<typename T, uint32_t SZ, typename Comparator = std::less<T>> struct pq 
 		sift_down(0);
 		return res;
 	}
-	void sift_down(uint32_t i) {
+	void sift_down(uint32_t i) noexcept {
 		T tmp = h[i];
 		uint32_t l, r, m;
 		while ((l = (i << 1 | 1)) < n) {
 			r = l + 1, m = (r < n && comp(h[r], h[l])) ? r : l;
-			if (!comp(h[m], h[i])) break;
+			if (!comp(h[m], tmp)) break;
 			h[i] = h[m];
 			i = m;
 		}
 		h[i] = tmp;
 	}
-	void heapify() {
+	void heapify() noexcept {
 		if (n <= 1) return;
 		for (int32_t i = int32_t(n - 2) >> 1; i >= 0; --i)
 			sift_down(uint32_t(i));
 	}
 };
+

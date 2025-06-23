@@ -1,0 +1,73 @@
+template <typename T, uint32_t SZ, uint32_t LOG2, bool asSet>
+struct binary_trie {
+	struct Node {
+		std::array<int, 2> state;
+		uint32_t count;
+		Node() {
+			init();
+		}
+		void init() {
+			count = 0, state.fill(-1);
+		}
+	};
+	Node trie[SZ];
+	uint32_t n = 1, nxt_free = 1;
+	binary_trie() = default;
+	bool contains(T _n) const noexcept {
+		int node{};
+		for (int i = LOG2; i > -1; --i) {
+			node = trie[node].state[_n >> i & 1];
+			if (node == -1) return false;
+		}
+		return true;
+	}
+	T find_min_XOR(T _n) const noexcept {
+		T res{};
+		int node{};
+		for (int i = LOG2, bit; i > -1; --i) {
+			bit = (_n >> i) & 1;
+			if (trie[node].state[bit] != -1) {
+				node = trie[node].state[bit];
+				continue;
+			}
+			res |= static_cast<T>(1) << i;
+			node = trie[node].state[!bit];
+		}
+		return res;
+	}
+	int create() noexcept {
+		if (n == nxt_free) {
+			++n;
+			return nxt_free++;
+		}
+		int idx = nxt_free;
+		nxt_free = trie[idx].count;
+		trie[idx].init();
+		return idx;
+	}
+	void insert(T _n) noexcept {
+		if constexpr (asSet) if (contains(_n)) return;
+		int node{};
+		++trie[node].count;
+		for (int i = LOG2, prev, bit; i > -1; --i) {
+			prev = node, bit = _n >> i & 1;
+			if ((node = trie[node].state[bit]) == -1) {
+				node = trie[prev].state[bit] = create();
+			}
+			++trie[node].count;
+		}
+	}
+	void remove(T _n) noexcept {
+		if constexpr(asSet) if (!contains(_n)) return;
+		int node = {};
+		--trie[node].count;
+		for (int i = LOG2, prev; i > -1; --i) {
+			prev = node;
+			node = trie[node].state[_n >> i & 1];
+			--trie[node].count;
+			if (trie[node].count == 0)
+				trie[prev].state[_n >> i & 1] = -1, trie[node].count = nxt_free, nxt_free = node;
+		}
+	}
+};
+

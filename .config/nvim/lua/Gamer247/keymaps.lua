@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter', 'DirChanged' }, {
 
 -- SNIPPETS
 local function set_CP_cpp_keymaps(path)
-	local config_path = vim.fn.stdpath('config')
+	local snippet_path = vim.fn.stdpath('config') .. '/snippets/cpp'
 	local executable = path .. '/' .. vim.fn.expand('%:t:r')
 	local file = vim.fn.expand('%:p')
 
@@ -46,7 +46,14 @@ local function set_CP_cpp_keymaps(path)
 	local run = 'ulimit -Ss 262114 && "' .. executable .. '" < "' .. path .. '/inp"'
 
 	-- `buffer = true` in opts make the keymaps only local to these buffers
-	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cpp', ':%d | read ' .. config_path .. '/snippets/cpp/cpp<CR>kddG30<C-e>5kA', { noremap = true, silent = true, })
+	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cpp', ':%d | read ' .. snippet_path .. '/cpp<CR>kddG30<C-e>5kA', { noremap = true, silent = true, })
+	-- map filename of snippet folder to copy contents
+	local files = vim.fn.readdir(snippet_path)
+	for _, file in ipairs(files) do
+		if file ~= 'cpp' then
+			vim.api.nvim_buf_set_keymap(0, 'n', '<leader>' .. file, ':read ' .. snippet_path .. '/' .. file .. '<CR>', { noremap = true, silent = true, })
+		end
+	end
 	-- compile
 	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', ':w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
 	-- run compiled
