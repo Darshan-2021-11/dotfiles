@@ -46,7 +46,7 @@ local function set_CP_cpp_keymaps(path)
 	local run = 'ulimit -Ss 262114 && "' .. executable .. '" < "' .. path .. '/inp"'
 
 	-- `buffer = true` in opts make the keymaps only local to these buffers
-	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cpp', ':%d | read ' .. config_path .. '/snippets/cpp<CR>kddG30<C-e>5kA', { noremap = true, silent = true, })
+	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cpp', ':%d | read ' .. config_path .. '/snippets/cpp/cpp<CR>kddG30<C-e>5kA', { noremap = true, silent = true, })
 	-- compile
 	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', ':w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
 	-- run compiled

@@ -50,7 +50,7 @@ fi
 xset r rate 300 50
 
 ## applications
-xautolock -time 3 -locker 'slock | systemctl suspend' -notify 150 -notifier 'xset dpms force off' &
+xautolock -time 3 -locker 'slock | systemctl suspend' -notify 30 -notifier 'xset dpms force off' &
 slstatus &
 st &
 firefox &
