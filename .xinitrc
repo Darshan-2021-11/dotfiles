@@ -47,9 +47,10 @@ if [ -d "$xinitdir"/xinitrc.d ] ; then
 fi
 
 ##decrease response time of keyboard in Xserver for faster nvim
-xset r rate 300 40
+xset r rate 300 50
 
 ## applications
+xautolock -time 3 -locker 'slock | systemctl suspend' -notify 150 -notifier 'xset dpms force off' &
 slstatus &
 st &
 firefox &

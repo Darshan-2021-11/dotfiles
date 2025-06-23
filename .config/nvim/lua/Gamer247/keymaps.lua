@@ -40,21 +40,21 @@ local function set_CP_cpp_keymaps(path)
 	sudo g++ -std=c++17 -Wall -Wextra -Wshadow -Winvalid-pch -funroll-loops -finline-functions -O2 -D {}
 	]]
 	local compile = 'g++ -std=c++17 -Wall -Wextra -Wshadow -Winvalid-pch -funroll-loops -finline-functions -O2 "' .. file .. '" -o "' .. executable .. '"'
+	local debug = 'g++ -std=c++17 -Wall -Wextra -Wshadow -Winvalid-pch -funroll-loops -finline-functions -O2 -ggdb "' .. file .. '" -o "' .. executable .. '"'
 	-- increasing stack size to 256mb with ulimit as soft limit
 	-- for changing soft limit(-Ss), hard limit(-Hs), both(-s)
 	local run = 'ulimit -Ss 262114 && "' .. executable .. '" < "' .. path .. '/inp"'
 
 	-- `buffer = true` in opts make the keymaps only local to these buffers
-	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cpp', ':%d | read ' .. config_path .. '/snippets/cpp<CR>kdd5jA', { noremap = true, silent = true, })
+	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>cpp', ':%d | read ' .. config_path .. '/snippets/cpp<CR>kddG30<C-e>5kA', { noremap = true, silent = true, })
 	-- compile
 	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>c', ':w | !' .. compile .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
 	-- run compiled
 	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>r', ':!' .. run .. ' > "' .. path .. '/out" 2>&1<CR><CR>', { noremap = true, silent = true, })
 	-- compile inside shell
-	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', ':w | belowright split term://bash<CR>i' .. compile .. '<CR>exit', { noremap = true, silent = true, })
+	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', ':w | belowright split term://bash<CR>i' .. debug .. '<CR>exit', { noremap = true, silent = true, })
 	-- compile run shell
 	vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sr', ':belowright split term://bash<CR>i' .. run, { noremap = true, silent = true, })
-
 end
 
 vim.api.nvim_create_user_command('CP', function()
