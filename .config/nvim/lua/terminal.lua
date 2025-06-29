@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd({ 'TermRequest' }, {
 		end
 	end
 })
-vim.api.nvim_create_autocmd({ 'TermEnter', 'DirChanged' }, {
+vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter', 'DirChanged' }, {
 	desc = 'Handles OSC 7 dir change requests',
 	group = vim.api.nvim_create_augroup('UserTerminal', { clear = false }),
 	callback = function(ev)

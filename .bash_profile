@@ -10,4 +10,4 @@ export MANPAGER='nvim +Man!'
 export EDITOR='nvim'
 
 # start x-server
-startx
+exec startx
