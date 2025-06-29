@@ -44,7 +44,7 @@ vim.opt.smartcase = true
 vim.opt.hlsearch = true
 
 -- change directory to current file
-vim.opt.autochdir = true
+vim.opt.autochdir = false
 
 -- fast macros
 vim.opt.lazyredraw = true
