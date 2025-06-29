@@ -1,0 +1,5 @@
+require('options')
+require('keymaps')
+require('terminal')
+require('colorscheme')
+require('plugins.init')

@@ -22,8 +22,8 @@ struct mp {
 		sort(data, data + n, less<T>());
 	}
 	uint32_t get(const T v) const noexcept {
-		uint32_t idx = lower_bound(data, data + _n, v) - data;
-		if (idx == _n || data[idx] != v) return 0;
+		uint32_t idx = lower_bound(data, data + n, v) - data;
+		if (idx == n || data[idx] != v) return 0;
 		return freq[idx];
 	}
 	uint32_t operator[](const T v) const noexcept {

@@ -1,1 +1,1 @@
-require("Gamer247.init")
+require("init")

@@ -3,31 +3,6 @@ Open netrw in a 20 width split in tree view
 ]]
 vim.api.nvim_set_keymap('n', '<leader>n', ':20Lex<CR>', { noremap = true, })
 
--- Change directory via terminal
-vim.api.nvim_create_autocmd({ 'TermRequest' }, {
-	desc = 'Handles OSC 7 dir change requests',
-	callback = function(ev)
-		if string.sub(ev.data.sequence, 1, 4) == '\x1b]7;' then
-			local dir = string.gsub(ev.data.sequence, '\x1b]7;file://[^/]*', '')
-			if vim.fn.isdirectory(dir) == 0 then
-				vim.notify('invalid dir: '..dir)
-				return
-			end
-			vim.api.nvim_buf_set_var(ev.buf, 'osc7_dir', dir)
-			if vim.o.autochdir and vim.api.nvim_get_current_buf() == ev.buf then
-				vim.cmd.cd(dir)
-			end
-		end
-	end
-})
-vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter', 'DirChanged' }, {
-	callback = function(ev)
-		if vim.b.osc7_dir and vim.fn.isdirectory(vim.b.osc7_dir) == 1 then
-			vim.cmd.cd(vim.b.osc7_dir)
-		end
-	end
-})
-
 -- SNIPPETS
 local function set_CP_cpp_keymaps(path)
 	local snippet_path = vim.fn.stdpath('config') .. '/snippets/cpp'
@@ -81,6 +56,7 @@ vim.api.nvim_create_user_command('CP', function()
 	vim.api.nvim_set_current_win(winnr)
 
 	vim.api.nvim_create_autocmd({ 'BufEnter', }, {
+		desc = 'Create competitive programming environment',
 		group = vim.api.nvim_create_augroup('UserSnippets', { clear = false }),
 		pattern = { '*.cpp', },
 		callback = function()

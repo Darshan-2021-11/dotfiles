@@ -1,7 +1,6 @@
 vim.g.mapleader = ' '
 
--- NETRW
--- remove annoying banner
+-- NETRW remove annoying banner
 vim.g.netrw_banner = 0
 -- liststyle tree
 vim.g.netrw_liststyle = 2
