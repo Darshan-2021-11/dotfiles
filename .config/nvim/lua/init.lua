@@ -2,4 +2,6 @@ require('options')
 require('keymaps')
 require('terminal')
 require('colorscheme')
-require('plugins.init')
+
+require('CP')
+--require('plugins.init')

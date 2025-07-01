@@ -55,7 +55,7 @@ vim.opt.shortmess:append('c')
 
 -- setting the completion popup to show automatically, see `:h compl-autocomplete`
 vim.api.nvim_create_autocmd('InsertCharPre', {
-	group = vim.api.nvim_create_augroup('UserComplete', { clear = false, }),
+	group = vim.api.nvim_create_augroup('UserComplete', { clear = true, }),
 	buffer = vim.api.nvim_get_current_buf(),
 	callback = function()
 		if vim.fn.pumvisible() == 1 or vim.fn.state('m') == 'm' then
@@ -70,7 +70,7 @@ vim.api.nvim_create_autocmd('InsertCharPre', {
 vim.opt.termguicolors = false
 -- setting colorscheme options for notermguicolors
 vim.api.nvim_create_autocmd('ColorScheme', {
-	group = vim.api.nvim_create_augroup('UserColorScheme', { clear = false, }),
+	group = vim.api.nvim_create_augroup('UserColorScheme', { clear = true, }),
 	callback = function()
 		local function replace_hl_property(hl_group, props)
 			vim.api.nvim_set_hl(
