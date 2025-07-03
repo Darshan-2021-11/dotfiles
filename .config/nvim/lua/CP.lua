@@ -46,12 +46,15 @@ local function apply_keymaps(bufnr)
 	end
 end
 
-local function close_io()
+local function close_io(close_buf)
 	for _, name in ipairs(M.io_files) do
 		local bufnr = vim.fn.bufnr(name)
 		if bufnr ~= -1 then
 			for _, win in ipairs(vim.fn.win_findbuf(bufnr)) do
 				vim.api.nvim_win_close(win, true)
+			end
+			if close_buf then
+				vim.api.nvim_buf_delete(bufnr, { force = true, })
 			end
 		end
 	end
@@ -103,7 +106,7 @@ function M.start()
 			if vim.tbl_contains(M.io_files, bufname) then return end
 			local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
 			if ft ~= 'cpp' and M.io_open then
-				close_io()
+				close_io(false)
 			elseif ft == 'cpp' and not M.io_open then
 				vim.schedule(open_io)
 			end
@@ -123,7 +126,7 @@ function M.stop()
 		end
 	end
 	pcall(vim.api.nvim_del_augroup_by_name, M.autocmd_group)
-	close_io()
+	close_io(true)
 	M.buffers = {}
 	M.active = false
 end
