@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/*nor's fastio: https://judge.yosupo.jp/submission/75233*/
+/*{{{ nor's fastio: https://judge.yosupo.jp/submission/75233*/
 struct IOPre {
 	static constexpr int TEN = 10, SZ = TEN * TEN * TEN * TEN;
 	std::array<char, 4 * SZ> num;
@@ -326,6 +326,7 @@ struct IO {
 IO io;
 #define cin io
 #define cout io
+/* nor's fastio }}} */
 
 int main() {
 	cin.tie(nullptr)->sync_with_stdio(false);

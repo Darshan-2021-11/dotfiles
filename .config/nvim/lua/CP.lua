@@ -35,7 +35,7 @@ local function apply_keymaps(bufnr)
 		if file ~= 'cpp' then
 			map(bufnr, 'n', keys, table.concat({ ':read ', snippet_path, '/', file, '<CR>', }, ''), buf_opts)
 		else
-			map(bufnr, 'n', keys, table.concat({ ':%d | read ', snippet_path, '/', file, '<CR>kddG35<C-e>5kA', }, ''), buf_opts)
+			map(bufnr, 'n', keys, table.concat({ ':%d | read ', snippet_path, '/', file, '<CR>kddG5kA', }, ''), buf_opts)
 		end
 	end
 

@@ -25,3 +25,4 @@ struct bs {
 		return (data[idx >> IDX_RS] >> (idx & MASK)) & 1U;
 	}
 };
+

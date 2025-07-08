@@ -53,6 +53,9 @@ vim.opt.completeopt:append({ 'noselect', 'menuone', })
 -- show completion pop up even if only one option present
 vim.opt.shortmess:append('c')
 
+-- set fold to marker
+vim.opt.foldmethod = "marker"
+
 -- setting the completion popup to show automatically, see `:h compl-autocomplete`
 vim.api.nvim_create_autocmd('InsertCharPre', {
 	group = vim.api.nvim_create_augroup('UserComplete', { clear = true, }),
