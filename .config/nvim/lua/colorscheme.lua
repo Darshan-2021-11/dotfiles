@@ -14,4 +14,4 @@ end
 ensure_theme('tokyonight.nvim', 'https://github.com/folke/tokyonight.nvim')'
 ]]
 
-vim.cmd[[ colorscheme default ]]
+vim.cmd[[ colorscheme vim ]]

@@ -158,14 +158,12 @@ struct IO {
 			char c = 0;
 			do c = input_buffer[input_ptr_left++];
 			while (c < '-');
-			[[maybe_unused]] bool minus = false;
-			if constexpr (std::is_signed<T>::value == true)
-				if (c == '-') minus = true, c = input_buffer[input_ptr_left++];
+			bool minus = false;
+			if (c == '-') minus = true, c = input_buffer[input_ptr_left++];
 			x = 0;
 			while (c >= '0')
 				x = x * TEN + (c & MASK), c = input_buffer[input_ptr_left++];
-			if constexpr (std::is_signed<T>::value == true)
-				if (minus) x = -x;
+			if (minus) x = -x;
 		}
 
 	inline void skip_space() {
