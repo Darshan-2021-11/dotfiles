@@ -52,6 +52,7 @@ xset r rate 300 50
 ## applications
 #xautolock -time 3 -locker 'slock | systemctl suspend' -notify 30 -notifier 'xset dpms force off' &
 [[ -f ~/.fehbg ]] && . ~/.fehbg &
+redshift -O3200 &
 slstatus &
 st &
 firefox &
