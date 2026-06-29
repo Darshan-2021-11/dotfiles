@@ -32,7 +32,7 @@ vim.opt.wrap = false
 
 -- use special symbols for whitespaces
 vim.opt.list = true
-vim.opt.listchars:append({ trail = '-', })
+vim.opt.listchars:append({ trail = '-', tab = '| ', eol = '↵' })
 
 -- add title
 vim.opt.title = true
